@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Action" representedClassName="Action" syncable="YES" codeGenerationType="class">
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <relationship name="dishes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dish" inverseName="orderOfActions" inverseEntity="Dish"/>
+    </entity>
+    <entity name="Dish" representedClassName="Dish" syncable="YES" codeGenerationType="class">
+        <attribute name="calories" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cuisine" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="imageName" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="typeDish" attributeType="String"/>
+        <relationship name="ingredients" toMany="YES" deletionRule="Nullify" destinationEntity="Ingredient" inverseName="dishes" inverseEntity="Ingredient"/>
+        <relationship name="orderOfActions" toMany="YES" deletionRule="Nullify" destinationEntity="Action" inverseName="dishes" inverseEntity="Action"/>
+    </entity>
+    <entity name="Ingredient" representedClassName="Ingredient" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="dishes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dish" inverseName="ingredients" inverseEntity="Dish"/>
+    </entity>
+    <elements>
+        <element name="Action" positionX="-225" positionY="54" width="128" height="73"/>
+        <element name="Dish" positionX="-63" positionY="0" width="128" height="163"/>
+        <element name="Ingredient" positionX="-409.625" positionY="-12.2734375" width="128" height="88"/>
+    </elements>
+</model>
