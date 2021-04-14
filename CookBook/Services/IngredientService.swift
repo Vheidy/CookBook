@@ -26,14 +26,22 @@ protocol IngredientServiceProtocol {
 
 class IngredientsService: IngredientServiceProtocol {
     
-    private var ingredients = [IngredientModel]()
+    private var ingredientsStore = [IngredientModel]()
     private let coreDataService: CoreDataService
     
+    var ingredientsCount: Int {
+        ingredientsStore.count
+    }
     
     init() {
         coreDataService = CoreDataService()
     }
     
+    /// Return the ingredients for required IDs
+    /// - Parameters:
+    ///   - requiredIDs
+    ///   - context: context where needs to find ingredient
+    /// - Returns: array of Ingredients with required IDs
     func fetchIngredient(for requiredIDs: [String], context: NSManagedObjectContext? = nil) -> [Ingredient] {
         let currentContext = context ?? coreDataService.persistentContainer.newBackgroundContext()
         
@@ -49,6 +57,8 @@ class IngredientsService: IngredientServiceProtocol {
         return array
     }
     
+    /// Update all elements in ingredientsStore
+    /// - Parameter complition: <#complition description#>
     func fetchAllElements(complition: VoidCallback?) {
         updateData(completion: complition)
     }
@@ -78,11 +88,11 @@ class IngredientsService: IngredientServiceProtocol {
             let fetchRequest = NSFetchRequest<Ingredient>(entityName: "Ingredient")
             do {
                 let ingredientsObjects = try currentContext.fetch(fetchRequest) as [Ingredient]
-                ingredients = []
+                ingredientsStore = []
                 for element in ingredientsObjects {
                     if let name = element.value(forKey: "name") as? String, let id = element.value(forKey: "id") as? String {
                         let ingredient  = IngredientModel(name: name, id: id)
-                        ingredients.append(ingredient)
+                        ingredientsStore.append(ingredient)
                     }
                 }
                 DispatchQueue.main.async {
@@ -96,10 +106,10 @@ class IngredientsService: IngredientServiceProtocol {
     
     //Delete ingredients from ingredients array and CoreData
     func deleteIngredient(index: Int, completion: VoidCallback?) {
-        guard ingredients.indices.contains(index) else {return}
+        guard ingredientsStore.indices.contains(index) else {return}
         DispatchQueue.global(qos: .default).async { [unowned self] in
         let currentContext = coreDataService.persistentContainer.newBackgroundContext()
-            let ingredient = ingredients[index]
+            let ingredient = ingredientsStore[index]
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Ingredient")
             do {
                 let ingredientsObjects = try currentContext.fetch(fetchRequest)
@@ -108,9 +118,6 @@ class IngredientsService: IngredientServiceProtocol {
                         currentContext.delete(object)
                         try currentContext.save()
                         updateData(completion: completion)
-//                        DispatchQueue.main.async {
-//                            completion?()
-//                        }
                     }
                 }
             } catch {
@@ -121,12 +128,9 @@ class IngredientsService: IngredientServiceProtocol {
     
     //Get ingredient for indexPath
     func fetchIngredient(for index: Int) -> IngredientModel? {
-        guard ingredients.indices.contains(index) else {return nil}
-        let ingredient = ingredients[index]
+        guard ingredientsStore.indices.contains(index) else {return nil}
+        let ingredient = ingredientsStore[index]
         return  ingredient
     }
-    
-    var ingredientsCount: Int {
-        ingredients.count
-    }
+
 }

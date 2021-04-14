@@ -91,6 +91,7 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
         if let item = dishService.getFields(for: indexPath) {
             cell.nameLabel?.text = item.name
             cell.dishTypeLabel?.text = item.type
+            // FIXME: Change this
             cell.dishImage?.image = item.image ?? UIImage(named: "dish")
         }
         return cell

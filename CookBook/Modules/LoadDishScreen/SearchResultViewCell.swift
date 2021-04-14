@@ -31,6 +31,8 @@ class SearchResultViewCell: UICollectionViewCell {
 
         imageDish.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
+//        imageDish.isUserInteractionEnabled = false
+//        label.isUserInteractionEnabled = false
         
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -57,7 +59,7 @@ class SearchResultViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(image: UIImage, title: String) {
+    func configure(image: UIImage?, title: String) {
         imageDish.image = image
         
         label.text = title

@@ -28,33 +28,28 @@ enum APIError: Error {
 }
 
 protocol NetworkProtocol {
-    func fetchRequestFor(query: String, completion: @escaping((Result<ResponseModel, APIError>) -> Void))
+    func fetchRequest(for urlString: String, completion: @escaping((Result<ResponseModel, APIError>) -> Void))
 }
 
 class NetworkService: NetworkProtocol {
     
-//    static let shared = NetworkService()
     
-    private var app_id = "0f316485"
-    private var app_key = "a82e1ac9423ea6eee0c5137a0a58940a"
-    private var basedURL = "https://api.edamam.com/search"
-    
-    func fetchRequestFor(query: String, completion: @escaping((Result<ResponseModel, APIError>) -> Void)) {
-        request(query: query, completion: completion)
-    }
-    
-    func request<T: Codable>(query: String, completion: @escaping((Result<T, APIError>) -> Void)) {
-        guard !query.isEmpty else {
+    /// Create request for url and call it
+    /// - Parameters:
+    ///   - urlString: url in string format
+    func fetchRequest(for urlString: String, completion: @escaping((Result<ResponseModel, APIError>) -> Void)) {
+        guard !urlString.isEmpty else {
             completion(.failure(.internalError))
             return }
-        guard let url = URL(string: "\(basedURL)?app_id=\(app_id)&app_key=\(app_key)&q=\(query)") else {
+        guard let url = URL(string: urlString) else {
             completion(.failure(.internalError))
             return }
         let request = URLRequest(url: url)
         call(with: request, completion: completion)
     }
     
-    private func call<T:Codable>(with request: URLRequest, completion: @escaping((Result<T, APIError>) -> Void)) {
+    /// Call the givaen request and return success or failure result
+    private func call<T: Codable>(with request: URLRequest, completion: @escaping((Result<T, APIError>) -> Void)) {
         let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
             guard error == nil, let resultData = data else {
                 print(error.debugDescription)
@@ -63,7 +58,6 @@ class NetworkService: NetworkProtocol {
             }
             do {
                 let object = try JSONDecoder().decode(T.self, from: resultData)
-//                print(object)
                 completion(.success(object))
             } catch {
                 print(error)
@@ -72,5 +66,4 @@ class NetworkService: NetworkProtocol {
         })
         task.resume()
     }
-    
 }

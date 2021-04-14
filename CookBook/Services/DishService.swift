@@ -20,6 +20,7 @@ struct DishModel {
     var id: Date
 }
 
+//FIXME: UIImage shouldn't be there 
 struct DisplayItem {
     let name: String
     let type: String
@@ -46,12 +47,7 @@ class DishService {
         return fetchController.sections?.count ?? 0
     }
     
-    func rowsInSections(_ section: Int) -> Int {
-        guard let sections = fetchController.sections, sections.indices.contains(section), let sectionInfo = fetchController.sections?[section] else {
-            return 0
-        }
-        return sectionInfo.numberOfObjects
-    }
+    
     
     init(dishes: [DishModel], completion: VoidCallback?) {
         coreDataService = CoreDataService()
@@ -60,6 +56,7 @@ class DishService {
     }
     
     
+    /// Delete ingredients from ingredientsStrore for given indexPath
     func deleteRows(indexPath: IndexPath, completion: VoidCallback?) {
         let dish = fetchController.object(at: indexPath)
         currentContext.delete(dish)
@@ -70,9 +67,19 @@ class DishService {
         } catch {
             print(error)
         }
-}
+    }
     
-    func loadSavedData() {
+    /// Returns number of rows in given section
+    /// - Parameter section: number of section
+    /// - Returns: number of rows
+    func rowsInSections(_ section: Int) -> Int {
+        guard let sections = fetchController.sections, sections.indices.contains(section), let sectionInfo = fetchController.sections?[section] else {
+            return 0
+        }
+        return sectionInfo.numberOfObjects
+    }
+    
+    private func loadSavedData() {
         let request = NSFetchRequest<Dish>(entityName: "Dish")
         let sort = NSSortDescriptor(key: "id", ascending: false)
         request.sortDescriptors = [sort]
@@ -114,6 +121,9 @@ class DishService {
         return arrayOfIngredients
     }
     
+    /// Return the displayItem for indexPath
+    /// - Parameter indexPath
+    /// - Returns: DisplayItem which includes name, type and image of cells
     func getFields(for indexPath: IndexPath) -> DisplayItem? {
         var imageDish: UIImage?
         let dish = fetchController.object(at: indexPath)

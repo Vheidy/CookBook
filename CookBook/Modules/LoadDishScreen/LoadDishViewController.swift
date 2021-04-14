@@ -8,75 +8,11 @@
 import UIKit
 import SafariServices
 
-class CustomTapGestureRecognezer: UITapGestureRecognizer {
-    var url: URL?
-}
-
 class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
-    var searchBar: UISearchBar
+    var customSearchBar: UISearchBar
     var searchService: RecipeProvider
     var collectionView: UICollectionView
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        searchBar = UISearchBar()
-        searchService = SearchService()
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 155, height: 155)
-        layout.sectionInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        layout.minimumLineSpacing = 20
-        collectionView.setCollectionViewLayout(layout, animated: false)
-        
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        searchBar.delegate = self
-        collectionView.automaticallyAdjustsScrollIndicatorInsets = false
-        collectionView.register(SearchResultViewCell.self, forCellWithReuseIdentifier: "SearchResultViewCell")
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        searchService.numberOfItems
-    }
-
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell", for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
-        if let item = searchService.fetchItem(for: indexPath) {
-            cell.configure(image: item.image, title: item.label)
-            cell.layer.shadowColor = UIColor.black.cgColor
-            cell.layer.shadowOpacity = 0.5
-            cell.layer.shadowOffset = CGSize(width: 0, height: 1)
-            let gesture = CustomTapGestureRecognezer(target: self, action: #selector(tapOnCell(with:)))
-            gesture.url = item.url
-            cell.addGestureRecognizer(gesture)
-        }
-        return cell
-    }
-    
-    @objc func tapOnCell(with gestureRecognizer: CustomTapGestureRecognezer) {
-        guard let url = gestureRecognizer.url else { return }
-        let safariVC = SFSafariViewController(url: url)
-        present(safariVC, animated: true, completion: nil)
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        print("Hi there")
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else {
-            return
-        }
-        searchService.searchFor(word: text, errorHandler: showErrorAlert(with:), completion: collectionView.reloadData)
-    }
-    
-    
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,13 +20,121 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         setup()
         collectionView.reloadData()
     }
-
-    private func setup() {
-        view.addSubview(searchBar)
-        view.addSubview(collectionView)
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        customSearchBar = UISearchBar()
+        searchService = SearchService()
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
         
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setLayout()
+        setParameters()
+        
+    }
+    
+    /// When user tap somewhere editing ends
+    @objc func endEditing() {
+        self.view.endEditing(true)
+    }
+    
+    /// This method calls when an error ocurs and show alert with more information
+    /// - Parameter title: Title for alert
+    func showErrorAlert(with title: String) {
+        let alertController = UIAlertController(title: title, message: "Please try again later", preferredStyle: .alert)
+        let actionOK = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(actionOK)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    //MARK: UISearchBarDelegate implementation
+    
+    /// This method calls when searchButton taped
+    /// - Parameter searchBar
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        search(for: searchBar.text)
+    }
+    
+    /// This method called when searchBar did end editing
+    /// - Parameter searchBar
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        search(for: searchBar.text)
+    }
+    
+    /// Check the word and search this in model
+    /// - Parameter word: search keyword
+    private func search(for word: String?)
+    {
+        guard let text = word else { return }
+        searchService.search(for: text, successPath: collectionView.reloadData, failurePath: showErrorAlert(with:))
+    }
+    
+    //MARK: UICollectionViewDataSource and Delegate implementation
+
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        searchService.numberOfItems
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell", for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
+        if let item = searchService.fetchItem(for: indexPath) {
+            cell.configure(image: fetchImage(from: item.image), title: item.label)
+        }
+        return cell
+    }
+    
+    /// Return image from url or standart image
+    /// - Parameter urlString: url for image in string format
+    private func fetchImage(from urlString: String) -> UIImage? {
+        guard let standartImage = UIImage(named: "breakfast") else {
+            return nil
+        }
+        do {
+            guard let url = URL(string: urlString) else { return standartImage }
+            let data = try Data(contentsOf: url)
+            return UIImage(data: data)
+        } catch {
+            print(error)
+            return standartImage
+        }
+    }
+    
+    /// Show web-page when user tap on cells
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = searchService.fetchItem(for: indexPath), let url = URL(string: item.url) else {
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true, completion: nil)
+    }
+
+    //MARK: Setup implemetation
+    
+    
+    /// This method needs to end editing when user tap somewhere on the screen
+    private func addGestureRecognizerForView() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    /// Set main parameters for searchBar and ColletionView, also set constraints
+    private func setup() {
+        view.addSubview(customSearchBar)
+        view.addSubview(collectionView)
+        customSearchBar.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.contentSize = CGSize(width: 150, height: 150)
+        
+        setConstraints(for: customSearchBar, collectionView: collectionView)
+        addGestureRecognizerForView()
+        
+        navigationItem.title = "Search"
+    }
+    
+    /// Set constraints for searchBar and collectionView
+    private func setConstraints(for searchBar: UISearchBar, collectionView: UICollectionView) {
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -101,26 +145,27 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60)
         ])
-        
-        collectionView.contentSize = CGSize(width: 150, height: 150)
-        
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
-        
-        collectionView.backgroundColor = .clear
-        
-        
-        navigationItem.title = "Search"
-    }
-
-    @objc func endEditing() {
-        self.view.endEditing(true)
     }
     
-    func showErrorAlert(with title: String) {
-        let alertController = UIAlertController(title: title, message: "Please ty again later", preferredStyle: .alert)
-        let actionOK = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(actionOK)
-        present(alertController, animated: true, completion: nil)
+    
+    /// Set some parameters for collectionView and cusomSearchBar
+    private func setParameters() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        customSearchBar.delegate = self
+        customSearchBar.backgroundImage = UIImage()
+        collectionView.backgroundColor = .clear
+        collectionView.register(SearchResultViewCell.self, forCellWithReuseIdentifier: "SearchResultViewCell")
+    }
+    
+    /// Set layout for collection view
+    private func setLayout() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: 155, height: 155)
+        layout.sectionInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        layout.minimumLineSpacing = 20
+        collectionView.setCollectionViewLayout(layout, animated: false)
     }
 
 

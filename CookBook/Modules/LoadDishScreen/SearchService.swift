@@ -8,20 +8,29 @@
 import Foundation
 import UIKit
 
-struct CollectionViewItem {
-    var label: String
-    var image: UIImage
-    var url: URL?
-}
-
 protocol RecipeProvider {
     var numberOfItems: Int { get }
-    func searchFor(word: String, errorHandler: ((String) -> ())?, completion: VoidCallback?)
-    func fetchItem(for indexPath: IndexPath) -> CollectionViewItem?
+    func search(for word: String, successPath: VoidCallback?, failurePath: ((String) -> ())?)
+    func fetchItem(for indexPath: IndexPath) -> Recipe?
+}
+
+struct PathCreater {
+    private enum Constants {
+        static let app_id = "0f316485"
+        static let app_key = "a82e1ac9423ea6eee0c5137a0a58940a"
+        static let basedURL = "https://api.edamam.com/search"
+    }
+    
+    /// Create path with new keyword
+    /// - Parameter query: search keyword
+    /// - Returns: url in string format
+    static func fetchPath(for query: String) -> String {
+        return "\(Constants.basedURL)?app_id=\(Constants.app_id)&app_key=\(Constants.app_key)&q=\(query)"
+    }
 }
 
 class SearchService: RecipeProvider {
-
+    
     var recipeStore: [Recipe]
     var newtworkService: NetworkProtocol
     
@@ -32,35 +41,27 @@ class SearchService: RecipeProvider {
     init() {
         recipeStore = []
         newtworkService = NetworkService()
-//        searchFor(word: "lunch", errorHandler: nil, completion: nil)
     }
     
-    func fetchItem(for indexPath: IndexPath) -> CollectionViewItem? {
+    /// Return the collectionViewItem for indexPath
+    /// - Parameter indexPath: indexPath of requires cells
+    /// - Returns: Recipe model
+    func fetchItem(for indexPath: IndexPath) -> Recipe? {
         guard recipeStore.indices.contains(indexPath.row)else {
             return nil
         }
-        let recipe = recipeStore[indexPath.row]
-        guard let standartImage = UIImage(named: "breakfast") else {
-            return nil
-        }
-        let image = self.fetchImage(from: recipe.image) ?? standartImage
-        return CollectionViewItem(label: recipe.label, image: image, url: URL(string: recipe.url))
+        return recipeStore[indexPath.row]
+
     }
     
-    private func fetchImage(from urlString: String) -> UIImage? {
-        do {
-            guard let url = URL(string: urlString) else { return nil }
-            let data = try Data(contentsOf: url)
-            return UIImage(data: data)
-        } catch {
-            print(error)
-            return nil
-        }
-    }
-    
-    func searchFor(word: String, errorHandler: ((String) -> ())?, completion: VoidCallback?) {
-        newtworkService.fetchRequestFor(query: word) {
-            switch $0 {
+    /// Search for keyword and handle the result
+    /// - Parameters:
+    ///   - word: search keyword
+    ///   - successPath: handler for success result
+    ///   - failurePath: handler for failure result
+    func search(for word: String, successPath: VoidCallback?, failurePath: ((String) -> ())?) {
+        newtworkService.fetchRequest(for: PathCreater.fetchPath(for: word)) { [unowned self] result in
+            switch result {
             case .failure(let error):
                 let errorDescription: String
                 switch error {
@@ -72,17 +73,17 @@ class SearchService: RecipeProvider {
                     errorDescription = "Parsing error"
                 }
                 DispatchQueue.main.async {
-                    errorHandler?(errorDescription)
+                    failurePath?(errorDescription)
                 }
             case .success(let response):
                 if response.hits.count > 0 {
                     self.updateStore(with: response)
                     DispatchQueue.main.async {
-                        completion?()
+                        successPath?()
                     }
                 } else {
                     DispatchQueue.main.async {
-                        errorHandler?("No results found")
+                        failurePath?("No results found")
                     }
                 }
             }
@@ -90,6 +91,7 @@ class SearchService: RecipeProvider {
     }
 
     
+    /// Update recipeStore for new response
     private func updateStore(with response: ResponseModel) {
         recipeStore = response.hits.map( { $0.recipe })
     }
