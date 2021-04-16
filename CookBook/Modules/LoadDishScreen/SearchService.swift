@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 protocol RecipeProvider {
-    var numberOfItems: Int { get }
+    func numberOfItems(in section: Int) -> Int
+    var numberOfSections: Int { get }
     func search(for word: String, successPath: VoidCallback?, failurePath: ((String) -> ())?)
     func fetchItem(for indexPath: IndexPath) -> Recipe?
 }
@@ -30,27 +31,43 @@ struct PathCreater {
 }
 
 class SearchService: RecipeProvider {
-    
     var recipeStore: [Recipe]
     var newtworkService: NetworkProtocol
-    
-    var numberOfItems: Int {
-        recipeStore.count
-    }
-    
+
     init() {
         recipeStore = []
         newtworkService = NetworkService()
     }
     
+    var numberOfSections: Int {
+        let countRecipe = recipeStore.count
+        let result = countRecipe / 3
+        if (countRecipe % 3) != 0 {
+            return result + 1
+        }
+        return result
+//        (recipeStore.count / 3 + (recipeStore.count % 3) == 0 ? 0 : 1)
+    }
+    
+    func numberOfItems(in section: Int) -> Int {
+        let countRecipe = recipeStore.count
+        switch section {
+        case countRecipe / 3:
+            return countRecipe % 3
+        default:
+            return 3
+        }
+    }
+    
+    
     /// Return the collectionViewItem for indexPath
     /// - Parameter indexPath: indexPath of requires cells
     /// - Returns: Recipe model
     func fetchItem(for indexPath: IndexPath) -> Recipe? {
-        guard recipeStore.indices.contains(indexPath.row)else {
+        guard recipeStore.indices.contains(indexPath.row + 3 * indexPath.section)else {
             return nil
         }
-        return recipeStore[indexPath.row]
+        return recipeStore[indexPath.row + 3 * indexPath.section]
 
     }
     
@@ -65,6 +82,8 @@ class SearchService: RecipeProvider {
             case .failure(let error):
                 let errorDescription: String
                 switch error {
+                case .urlFormingError:
+                    errorDescription = "Invalid URL string"
                 case .internalError:
                     errorDescription = "Invalid input"
                 case .serverError:

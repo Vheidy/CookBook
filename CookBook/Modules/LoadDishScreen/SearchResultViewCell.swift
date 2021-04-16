@@ -18,12 +18,23 @@ class SearchResultViewCell: UICollectionViewCell {
         setup()
     }
     
-
-    
     func setup()
     {
-        contentView.addSubview(imageDish)
-        contentView.addSubview(label)
+        let stackView = UIStackView(arrangedSubviews: [imageDish, label])
+        contentView.addSubview(stackView)
+        stackView.alignment = .fill
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 20
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+        ])
+
         
         contentView.backgroundColor = #colorLiteral(red: 0.9332640171, green: 0.9333797693, blue: 0.9371676445, alpha: 1)
         contentView.layer.cornerRadius = 30
@@ -31,29 +42,17 @@ class SearchResultViewCell: UICollectionViewCell {
 
         imageDish.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
-//        imageDish.isUserInteractionEnabled = false
-//        label.isUserInteractionEnabled = false
+
         
         label.numberOfLines = 0
         label.textAlignment = .center
-        imageDish.layer.cornerRadius = 40
+        imageDish.layer.cornerRadius = 10
         imageDish.layer.masksToBounds = true
         
-        setConstraints()
+        label.font = UIFont(name: "Kohinoor Telugu", size: 20)
+        
     }
     
-    private func setConstraints() {
-        NSLayoutConstraint.activate([
-            imageDish.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.margin),
-            imageDish.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imageDish.widthAnchor.constraint(equalToConstant: 100),
-            imageDish.heightAnchor.constraint(equalToConstant: 100),
-            label.topAnchor.constraint(equalTo: imageDish.bottomAnchor, constant: Constants.margin),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.margin),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.margin),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant:  -Constants.margin)
-        ])
-    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
