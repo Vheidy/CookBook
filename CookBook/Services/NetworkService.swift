@@ -23,6 +23,7 @@ struct ResponseModel: Codable {
 
 enum APIError: Error {
     case internalError
+    case urlFormingError
     case serverError
     case parsingError
 }
@@ -38,11 +39,8 @@ class NetworkService: NetworkProtocol {
     /// - Parameters:
     ///   - urlString: url in string format
     func fetchRequest(for urlString: String, completion: @escaping((Result<ResponseModel, APIError>) -> Void)) {
-        guard !urlString.isEmpty else {
-            completion(.failure(.internalError))
-            return }
         guard let url = URL(string: urlString) else {
-            completion(.failure(.internalError))
+            completion(.failure(.urlFormingError))
             return }
         let request = URLRequest(url: url)
         call(with: request, completion: completion)

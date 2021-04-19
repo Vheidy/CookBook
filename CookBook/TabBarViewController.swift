@@ -25,7 +25,8 @@ class TabBarViewController: UITabBarController {
     
     private func setup() {
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-
+        
+        self.isAccessibilityElement = true
         let ingredientScreenViewController = IngredientScreenTableViewController(nibName: nil, bundle: nil)
         let nc3 = UINavigationController(rootViewController: ingredientScreenViewController)
         let mainViewController = MainScreenTableViewController(with: [])

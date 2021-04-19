@@ -28,7 +28,10 @@ class IngredientScreenTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Ingredients"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentEditScreen))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentEditScreen))
+        addButton.isAccessibilityElement = true
+        addButton.accessibilityLabel = "Add new ingredient"
+        self.navigationItem.rightBarButtonItem = addButton
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         ingredientService.fetchAllElements { [weak self] in
             self?.tableView.reloadData()

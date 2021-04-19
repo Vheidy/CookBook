@@ -36,7 +36,9 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     private func setup() {
         navigationItem.title = "CookBook"
 
-        navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add , target: self, action: #selector(presentEditScreen)), animated: true)
+        let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add , target: self, action: #selector(presentEditScreen))
+        addButton.accessibilityLabel = "Add new dish"
+        navigationItem.setRightBarButton(addButton, animated: true)
         tableView.register(MainScreenTableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
@@ -93,6 +95,8 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
             cell.dishTypeLabel?.text = item.type
             // FIXME: Change this
             cell.dishImage?.image = item.image ?? UIImage(named: "dish")
+            cell.isAccessibilityElement = true
+            cell.accessibilityHint = "You can tap and see more information"
         }
         return cell
     }

@@ -23,6 +23,8 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         customSearchBar = UISearchBar()
+        customSearchBar.isAccessibilityElement = true
+        customSearchBar.accessibilityLabel = "Text field for search dish"
         searchService = SearchService()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
         
@@ -71,18 +73,35 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
     
     //MARK: UICollectionViewDataSource and Delegate implementation
 
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        searchService.numberOfSections
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        searchService.numberOfItems
+        searchService.numberOfItems(in: section)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell", for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
-        if let item = searchService.fetchItem(for: indexPath) {
-            cell.configure(image: fetchImage(from: item.image), title: item.label)
+        switch indexPath.row {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell", for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
+            if let item = searchService.fetchItem(for: indexPath) {
+                cell.configure(image: fetchImage(from: item.image), title: item.label)
+            }
+            return cell
+            
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StandartCell", for: indexPath)
+            if let item = searchService.fetchItem(for: indexPath) {
+                cell.backgroundColor = #colorLiteral(red: 0.9332640171, green: 0.9333797693, blue: 0.9371676445, alpha: 1)
+                cell.layer.cornerRadius = 30
+                cell.backgroundView = UIImageView(image: fetchImage(from: item.image))
+                cell.layer.masksToBounds = true
+            }
+            return cell
         }
-        return cell
     }
+  
     
     /// Return image from url or standart image
     /// - Parameter urlString: url for image in string format
@@ -156,6 +175,7 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         customSearchBar.backgroundImage = UIImage()
         collectionView.backgroundColor = .clear
         collectionView.register(SearchResultViewCell.self, forCellWithReuseIdentifier: "SearchResultViewCell")
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "StandartCell")
     }
     
     /// Set layout for collection view
@@ -165,10 +185,53 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         layout.itemSize = CGSize(width: 155, height: 155)
         layout.sectionInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         layout.minimumLineSpacing = 20
-        collectionView.setCollectionViewLayout(layout, animated: false)
+//        collectionView.setCollectionViewLayout(layout, animated: false)
+        collectionView.collectionViewLayout = createLayout()
     }
-
-
+    
+    func createLayout() -> UICollectionViewLayout {
+        
+        return UICollectionViewCompositionalLayout  { (section, env) -> NSCollectionLayoutSection? in
+            let mainItem = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(3/4),
+                    heightDimension: .fractionalHeight(1.0)))
+            
+            mainItem.contentInsets = NSDirectionalEdgeInsets(
+                top: 5,
+                leading: 2,
+                bottom: 2,
+                trailing: 2)
+            
+            let pairItem = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalHeight(0.5)))
+            
+            pairItem.contentInsets = NSDirectionalEdgeInsets(
+                top: 5,
+                leading: 2,
+                bottom: 2,
+                trailing: 2)
+            
+            let trailingGroup = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1/4),
+                    heightDimension: .fractionalHeight(1.0)),
+                subitem: pairItem,
+                count: 2)
+            
+            
+            let mainWithPairGroup = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalWidth(4/9)),
+                subitems: [mainItem, trailingGroup])
+            
+            return NSCollectionLayoutSection(group: mainWithPairGroup)
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
