@@ -7,6 +7,7 @@
 
 import UIKit
 import SafariServices
+import Nuke
 
 class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
@@ -86,7 +87,9 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         case 0:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell", for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
             if let item = searchService.fetchItem(for: indexPath) {
-                cell.configure(image: fetchImage(from: item.image), title: item.label)
+                downloadImage(item.image) { (imageView) in
+                    cell.configure(image: imageView.image, title: item.label)
+                }
             }
             return cell
             
@@ -95,10 +98,27 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
             if let item = searchService.fetchItem(for: indexPath) {
                 cell.backgroundColor = #colorLiteral(red: 0.9332640171, green: 0.9333797693, blue: 0.9371676445, alpha: 1)
                 cell.layer.cornerRadius = 30
-                cell.backgroundView = UIImageView(image: fetchImage(from: item.image))
                 cell.layer.masksToBounds = true
+   
+                downloadImage(item.image) { (imageView) in
+                    cell.backgroundView = imageView
+                }
             }
             return cell
+        }
+    }
+    
+    private func downloadImage(_ urlString: String, _ complition: ((UIImageView) -> ())?) {
+        guard let url = URL(string: urlString) else { return }
+        let imageView = UIImageView()
+        Nuke.loadImage(with: ImageRequest(url: url), into: imageView) { (result) in
+            switch result {
+            case .failure(let error):
+                print(error)
+                complition?(UIImageView(image: UIImage(named: "breakfast")))
+            case .success( _):
+                complition?(imageView)
+            }
         }
     }
   

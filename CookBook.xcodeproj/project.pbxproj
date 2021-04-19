@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36656229262DA6F200DC78D8 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 36656228262DA6F200DC78D8 /* Nuke */; };
 		761AD4E926134138002D1C7F /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761AD4E826134138002D1C7F /* SelectTableViewCell.swift */; };
 		7635C12426021F3900BE3B89 /* ImageEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7635C12326021F3900BE3B89 /* ImageEditCell.swift */; };
 		7636BC222603948A000B8393 /* EditScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7636BC212603948A000B8393 /* EditScreenModel.swift */; };
@@ -75,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36656229262DA6F200DC78D8 /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +247,9 @@
 			dependencies = (
 			);
 			name = CookBook;
+			packageProductDependencies = (
+				36656228262DA6F200DC78D8 /* Nuke */,
+			);
 			productName = CookBook;
 			productReference = 76AB6D8F25FF987E00F93B31 /* CookBook.app */;
 			productType = "com.apple.product-type.application";
@@ -272,6 +277,9 @@
 				Base,
 			);
 			mainGroup = 76AB6D8625FF987E00F93B31;
+			packageReferences = (
+				36656227262DA6F200DC78D8 /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
 			productRefGroup = 76AB6D9025FF987E00F93B31 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -517,6 +525,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36656227262DA6F200DC78D8 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36656228262DA6F200DC78D8 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36656227262DA6F200DC78D8 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		7670D3992611BB93007C97D4 /* IngredientsModel.xcdatamodeld */ = {
