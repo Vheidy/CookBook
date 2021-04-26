@@ -48,6 +48,13 @@
 		76E75E312614D1C800F3C1B4 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E75E302614D1C800F3C1B4 /* TabBarViewController.swift */; };
 		76FEC27226208EC000128C30 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC27126208EC000128C30 /* SearchService.swift */; };
 		76FEC2752620A1A500128C30 /* SearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC2742620A1A500128C30 /* SearchResultViewCell.swift */; };
+		76FEC2822636AB1D00128C30 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D84035263199FE00579F3B /* WidgetKit.framework */; };
+		76FEC2832636AB1D00128C30 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D84037263199FE00579F3B /* SwiftUI.framework */; };
+		76FEC2862636AB1D00128C30 /* CookBookWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC2852636AB1D00128C30 /* CookBookWidget.swift */; };
+		76FEC2892636AB1E00128C30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76FEC2882636AB1E00128C30 /* Assets.xcassets */; };
+		76FEC28B2636AB1E00128C30 /* CookBookWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC2872636AB1D00128C30 /* CookBookWidget.intentdefinition */; };
+		76FEC28C2636AB1E00128C30 /* CookBookWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC2872636AB1D00128C30 /* CookBookWidget.intentdefinition */; };
+		76FEC28F2636AB1E00128C30 /* CookBookWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 76FEC2812636AB1D00128C30 /* CookBookWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +63,13 @@
 			containerPortal = 76AB6D8725FF987E00F93B31 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 366A19F12631AB9400D47F48;
+			remoteInfo = CookBookWidgetExtension;
+		};
+		76FEC28D2636AB1E00128C30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76AB6D8725FF987E00F93B31 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 76FEC2802636AB1D00128C30;
 			remoteInfo = CookBookWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
@@ -68,6 +82,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				366A1A002631AB9500D47F48 /* CookBookWidgetExtension.appex in Embed App Extensions */,
+				76FEC28F2636AB1E00128C30 /* CookBookWidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +128,11 @@
 		76E75E302614D1C800F3C1B4 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		76FEC27126208EC000128C30 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		76FEC2742620A1A500128C30 /* SearchResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewCell.swift; sourceTree = "<group>"; };
+		76FEC2812636AB1D00128C30 /* CookBookWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CookBookWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		76FEC2852636AB1D00128C30 /* CookBookWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookBookWidget.swift; sourceTree = "<group>"; };
+		76FEC2872636AB1D00128C30 /* CookBookWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = CookBookWidget.intentdefinition; sourceTree = "<group>"; };
+		76FEC2882636AB1E00128C30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		76FEC28A2636AB1E00128C30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +151,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				36656229262DA6F200DC78D8 /* Nuke in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76FEC27E2636AB1D00128C30 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76FEC2832636AB1D00128C30 /* SwiftUI.framework in Frameworks */,
+				76FEC2822636AB1D00128C30 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,9 +252,10 @@
 			children = (
 				366A1A062631BECE00D47F48 /* CookBookWidgetExtension.entitlements */,
 				76AB6D9125FF987E00F93B31 /* CookBook */,
-				366A19F52631AB9400D47F48 /* CookBookWidget */,
+				76FEC2842636AB1D00128C30 /* CookBookWidget */,
 				36D84034263199FE00579F3B /* Frameworks */,
 				76AB6D9025FF987E00F93B31 /* Products */,
+				366A19F52631AB9400D47F48 /* CookBookWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -234,6 +264,7 @@
 			children = (
 				76AB6D8F25FF987E00F93B31 /* CookBook.app */,
 				366A19F22631AB9400D47F48 /* CookBookWidgetExtension.appex */,
+				76FEC2812636AB1D00128C30 /* CookBookWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -309,6 +340,17 @@
 			path = SelectIngredientsScreen;
 			sourceTree = "<group>";
 		};
+		76FEC2842636AB1D00128C30 /* CookBookWidget */ = {
+			isa = PBXGroup;
+			children = (
+				76FEC2852636AB1D00128C30 /* CookBookWidget.swift */,
+				76FEC2872636AB1D00128C30 /* CookBookWidget.intentdefinition */,
+				76FEC2882636AB1E00128C30 /* Assets.xcassets */,
+				76FEC28A2636AB1E00128C30 /* Info.plist */,
+			);
+			path = CookBookWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -345,6 +387,7 @@
 			);
 			dependencies = (
 				366A19FF2631AB9500D47F48 /* PBXTargetDependency */,
+				76FEC28E2636AB1E00128C30 /* PBXTargetDependency */,
 			);
 			name = CookBook;
 			packageProductDependencies = (
@@ -353,6 +396,23 @@
 			productName = CookBook;
 			productReference = 76AB6D8F25FF987E00F93B31 /* CookBook.app */;
 			productType = "com.apple.product-type.application";
+		};
+		76FEC2802636AB1D00128C30 /* CookBookWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76FEC2902636AB1E00128C30 /* Build configuration list for PBXNativeTarget "CookBookWidgetExtension" */;
+			buildPhases = (
+				76FEC27D2636AB1D00128C30 /* Sources */,
+				76FEC27E2636AB1D00128C30 /* Frameworks */,
+				76FEC27F2636AB1D00128C30 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CookBookWidgetExtension;
+			productName = CookBookWidgetExtension;
+			productReference = 76FEC2812636AB1D00128C30 /* CookBookWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -367,6 +427,9 @@
 						CreatedOnToolsVersion = 12.4;
 					};
 					76AB6D8E25FF987E00F93B31 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					76FEC2802636AB1D00128C30 = {
 						CreatedOnToolsVersion = 12.4;
 					};
 				};
@@ -389,6 +452,7 @@
 			targets = (
 				76AB6D8E25FF987E00F93B31 /* CookBook */,
 				366A19F12631AB9400D47F48 /* CookBookWidgetExtension */,
+				76FEC2802636AB1D00128C30 /* CookBookWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -408,6 +472,14 @@
 			files = (
 				76AB6D9F25FF988000F93B31 /* LaunchScreen.storyboard in Resources */,
 				76AB6D9C25FF988000F93B31 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76FEC27F2636AB1D00128C30 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76FEC2892636AB1E00128C30 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +506,7 @@
 				7635C12426021F3900BE3B89 /* ImageEditCell.swift in Sources */,
 				76AB6DB325FF9FAA00F93B31 /* EditScreenViewController.swift in Sources */,
 				7652733826023DCB008F9C68 /* InputViewCell.swift in Sources */,
+				76FEC28C2636AB1E00128C30 /* CookBookWidget.intentdefinition in Sources */,
 				76A866362600A08E00F80B6A /* MainScreenCell.swift in Sources */,
 				76E75E312614D1C800F3C1B4 /* TabBarViewController.swift in Sources */,
 				767FD828261EFA1C00945A5A /* LoadDishViewController.swift in Sources */,
@@ -461,6 +534,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		76FEC27D2636AB1D00128C30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76FEC2862636AB1D00128C30 /* CookBookWidget.swift in Sources */,
+				76FEC28B2636AB1E00128C30 /* CookBookWidget.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -468,6 +550,11 @@
 			isa = PBXTargetDependency;
 			target = 366A19F12631AB9400D47F48 /* CookBookWidgetExtension */;
 			targetProxy = 366A19FE2631AB9500D47F48 /* PBXContainerItemProxy */;
+		};
+		76FEC28E2636AB1E00128C30 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 76FEC2802636AB1D00128C30 /* CookBookWidgetExtension */;
+			targetProxy = 76FEC28D2636AB1E00128C30 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -683,6 +770,48 @@
 			};
 			name = Release;
 		};
+		76FEC2912636AB1E00128C30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7R92P2XBU2;
+				INFOPLIST_FILE = CookBookWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = vheidy.CookBook.CookBookWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		76FEC2922636AB1E00128C30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7R92P2XBU2;
+				INFOPLIST_FILE = CookBookWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = vheidy.CookBook.CookBookWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -709,6 +838,15 @@
 			buildConfigurations = (
 				76AB6DA425FF988000F93B31 /* Debug */,
 				76AB6DA525FF988000F93B31 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76FEC2902636AB1E00128C30 /* Build configuration list for PBXNativeTarget "CookBookWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76FEC2912636AB1E00128C30 /* Debug */,
+				76FEC2922636AB1E00128C30 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
