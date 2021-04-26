@@ -11,7 +11,7 @@ import UIKit
 
 typealias VoidCallback = () -> ()
 
-struct IngredientModel {
+struct IngredientModel: Encodable, Decodable {
     var name: String
     var id: String
 }
