@@ -24,7 +24,7 @@ class SearchResultViewCell: UICollectionViewCell {
         contentView.addSubview(stackView)
         stackView.alignment = .fill
         stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         stackView.spacing = 20
         
         stackView.translatesAutoresizingMaskIntoConstraints = false

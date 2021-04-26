@@ -7,9 +7,10 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 import CoreData
 
-struct DishModel {
+struct DishModel: Encodable, Decodable {
     var name: String = ""
     var typeDish: String = ""
     var ingredient: [IngredientModel] = []
@@ -36,9 +37,11 @@ protocol MainScreenViewModelProtocol: AnyObject {
 }
 
 class DishService {
+    @AppStorage("dishes", store: UserDefaults(suiteName: "group.vheidy.CookBook.CookBookWidget"))
+    var dishesData = Data()
     
     var fetchController = NSFetchedResultsController<Dish>()
-    var updateScreen: (() -> ())?
+//    var updateScreen: (() -> ())?
     
     private let coreDataService: CoreDataService
     private var currentContext: NSManagedObjectContext
@@ -47,14 +50,11 @@ class DishService {
         return fetchController.sections?.count ?? 0
     }
     
-    
-    
     init(dishes: [DishModel], completion: VoidCallback?) {
         coreDataService = CoreDataService()
         self.currentContext = coreDataService.persistentContainer.newBackgroundContext()
         loadSavedData()
     }
-    
     
     /// Delete ingredients from ingredientsStrore for given indexPath
     func deleteRows(indexPath: IndexPath, completion: VoidCallback?) {
@@ -86,15 +86,27 @@ class DishService {
         fetchController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: currentContext, sectionNameKeyPath: nil, cacheName: nil)
         do {
             try fetchController.performFetch()
+            guard let dishes = fetchController.fetchedObjects else { return }
+            if let dish = dishes.first,  let dishModel = transormInDishModel(dishObject: dish) {
+                saveData(dishModel)
+            }
         } catch {
             print("Fetch failed")
         }
     }
     
+    private func saveData(_ dish: DishModel) {
+        guard let dishesDataLoaded = try? JSONEncoder().encode(dish) else { return }
+        self.dishesData = dishesDataLoaded
+    }
+
     //Return dish for indexPath
     func fetchDish(for indexPath: IndexPath) -> DishModel? {
         guard let dishObjects = fetchController.fetchedObjects, dishObjects.indices.contains(indexPath.row) else { return nil }
-        let dishObject = dishObjects[indexPath.row]
+        return transormInDishModel(dishObject: dishObjects[indexPath.row])
+    }
+    
+    private func transormInDishModel(dishObject: Dish) -> DishModel? {
         guard let ingredients = dishObject.ingredients as? Set<Ingredient>, let arrayOfIngredients = transform(ingredients: ingredients),  let actions = dishObject.orderOfActions as? Set<Action>, let arrayOfActions = transform(actions: actions), let name = dishObject.name, let typeDish = dishObject.typeDish, let id = dishObject.id  else { return nil}
         
         return DishModel(name: name, typeDish: typeDish, ingredient: arrayOfIngredients, orderOfAction: arrayOfActions, imageName: dishObject.imageName, cuisine: dishObject.cuisine, calories: dishObject.calories, id: id)
