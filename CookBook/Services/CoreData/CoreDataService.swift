@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class CoreDataService {
+@objc class CoreDataService: NSObject {
     
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "IngredientsModel")

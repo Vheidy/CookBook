@@ -15,6 +15,12 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
     var searchService: RecipeProvider
     var collectionView: UICollectionView
     
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white

@@ -10,6 +10,12 @@ import SwiftUI
 
 class TabBarViewController: UITabBarController {
     
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()

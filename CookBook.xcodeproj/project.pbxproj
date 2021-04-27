@@ -39,6 +39,9 @@
 		76AB6DB325FF9FAA00F93B31 /* EditScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AB6DB225FF9FAA00F93B31 /* EditScreenViewController.swift */; };
 		76AB6DC025FFA7F700F93B31 /* IngredientScreenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AB6DBF25FFA7F700F93B31 /* IngredientScreenTableViewController.swift */; };
 		76D78FC926380D5C00A05E3D /* CookBookWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 366A19F22631AB9400D47F48 /* CookBookWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		76D78FDB2638393800A05E3D /* CBLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D78FDA2638393800A05E3D /* CBLogger.m */; };
+		76D78FE42638497C00A05E3D /* InitializationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D78FE32638497C00A05E3D /* InitializationHandler.swift */; };
+		76D78FE926385C6600A05E3D /* NSLogInitializationNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D78FE826385C6600A05E3D /* NSLogInitializationNumber.m */; };
 		76E75E312614D1C800F3C1B4 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E75E302614D1C800F3C1B4 /* TabBarViewController.swift */; };
 		76FEC27226208EC000128C30 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC27126208EC000128C30 /* SearchService.swift */; };
 		76FEC2752620A1A500128C30 /* SearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FEC2742620A1A500128C30 /* SearchResultViewCell.swift */; };
@@ -105,6 +108,12 @@
 		76AB6DAB25FF9CFC00F93B31 /* MainScreenTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenTableViewController.swift; sourceTree = "<group>"; };
 		76AB6DB225FF9FAA00F93B31 /* EditScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreenViewController.swift; sourceTree = "<group>"; };
 		76AB6DBF25FFA7F700F93B31 /* IngredientScreenTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientScreenTableViewController.swift; sourceTree = "<group>"; };
+		76D78FD82638393700A05E3D /* CookBook-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CookBook-Bridging-Header.h"; sourceTree = "<group>"; };
+		76D78FD92638393800A05E3D /* CBLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBLogger.h; sourceTree = "<group>"; };
+		76D78FDA2638393800A05E3D /* CBLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBLogger.m; sourceTree = "<group>"; };
+		76D78FE32638497C00A05E3D /* InitializationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationHandler.swift; sourceTree = "<group>"; };
+		76D78FE726385C6600A05E3D /* NSLogInitializationNumber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSLogInitializationNumber.h; sourceTree = "<group>"; };
+		76D78FE826385C6600A05E3D /* NSLogInitializationNumber.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSLogInitializationNumber.m; sourceTree = "<group>"; };
 		76E75E302614D1C800F3C1B4 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		76FEC27126208EC000128C30 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		76FEC2742620A1A500128C30 /* SearchResultViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewCell.swift; sourceTree = "<group>"; };
@@ -169,8 +178,11 @@
 			children = (
 				7670D3A22611BDD3007C97D4 /* CoreData */,
 				76A8663226009FF900F80B6A /* DishService.swift */,
+				76D78FDE26383C3B00A05E3D /* Logger */,
 				767E42D12608B77B001836BF /* IngredientService.swift */,
+				76D78FE32638497C00A05E3D /* InitializationHandler.swift */,
 				766A73C3261F3FC600F6EC72 /* NetworkService.swift */,
+				76D78FD82638393700A05E3D /* CookBook-Bridging-Header.h */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -297,6 +309,17 @@
 			path = SelectIngredientsScreen;
 			sourceTree = "<group>";
 		};
+		76D78FDE26383C3B00A05E3D /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				76D78FD92638393800A05E3D /* CBLogger.h */,
+				76D78FDA2638393800A05E3D /* CBLogger.m */,
+				76D78FE726385C6600A05E3D /* NSLogInitializationNumber.h */,
+				76D78FE826385C6600A05E3D /* NSLogInitializationNumber.m */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
 		76FEC2842636AB1D00128C30 /* CookBookWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,6 +391,7 @@
 					};
 					76AB6D8E25FF987E00F93B31 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -431,9 +455,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76D78FE42638497C00A05E3D /* InitializationHandler.swift in Sources */,
 				7635C12426021F3900BE3B89 /* ImageEditCell.swift in Sources */,
 				76AB6DB325FF9FAA00F93B31 /* EditScreenViewController.swift in Sources */,
 				7652733826023DCB008F9C68 /* InputViewCell.swift in Sources */,
+				76D78FE926385C6600A05E3D /* NSLogInitializationNumber.m in Sources */,
 				76A866362600A08E00F80B6A /* MainScreenCell.swift in Sources */,
 				76E75E312614D1C800F3C1B4 /* TabBarViewController.swift in Sources */,
 				767FD828261EFA1C00945A5A /* LoadDishViewController.swift in Sources */,
@@ -445,6 +471,7 @@
 				767FD81D261DEE6400945A5A /* SwiftUIView.swift in Sources */,
 				767FD815261B57CF00945A5A /* ImagePickerDelegate.swift in Sources */,
 				7670D3622608BEA2007C97D4 /* IngredientsEditScreen.swift in Sources */,
+				76D78FDB2638393800A05E3D /* CBLogger.m in Sources */,
 				76A8663326009FF900F80B6A /* DishService.swift in Sources */,
 				7670D36D2608D443007C97D4 /* SelectIngredientsViewController.swift in Sources */,
 				7670D39B2611BB93007C97D4 /* IngredientsModel.xcdatamodeld in Sources */,
@@ -651,6 +678,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7R92P2XBU2;
 				INFOPLIST_FILE = CookBook/Info.plist;
@@ -660,6 +688,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = vheidy.CookBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CookBook/Services/CookBook-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -670,6 +700,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7R92P2XBU2;
 				INFOPLIST_FILE = CookBook/Info.plist;
@@ -679,6 +710,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = vheidy.CookBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CookBook/Services/CookBook-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

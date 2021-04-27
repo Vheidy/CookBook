@@ -19,9 +19,13 @@
         <attribute name="name" attributeType="String"/>
         <relationship name="dishes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dish" inverseName="ingredients" inverseEntity="Dish"/>
     </entity>
+    <entity name="Initialization" representedClassName="Initialization" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
     <elements>
         <element name="Action" positionX="-225" positionY="54" width="128" height="73"/>
         <element name="Dish" positionX="-63" positionY="0" width="128" height="163"/>
         <element name="Ingredient" positionX="-409.625" positionY="-12.2734375" width="128" height="88"/>
+        <element name="Initialization" positionX="-234" positionY="63" width="128" height="58"/>
     </elements>
 </model>

@@ -12,6 +12,12 @@ class SelectIngredientsViewController: UITableViewController {
     var ingredientService: IngredientsService
     var saveSelectedCells: (_ cells: [IngredientModel]) -> ()
     
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
     init(saveCellsAction: @escaping (_ cells: [IngredientModel]) -> ()) {
         ingredientService = IngredientsService()
         saveSelectedCells = saveCellsAction

@@ -16,8 +16,15 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     var imageView: UIImage?
     var isFull: Bool = false
     
-    
     private var saveDish: (_ dish: DishModel)->()
+    
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
+    
     
     // Hightlight cells if they needs to be full
     private var isHightlight = false {
@@ -55,11 +62,13 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     
     // Needs to save dish in mainScreen and close editScreen
     @objc func addRecipe() {
+        logger.printLog("Tap save button")
         self.saveDish(dish)
         closeScreen()
     }
     
     @objc func closeScreen() {
+        logger.printLog("Close screen")
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
@@ -71,6 +80,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     
     // Present screen with ingredient selection functionality
     @objc func presentChooseIngredientScreen() {
+        logger.printLog("Tap add ingredient button")
         let selectViewController = SelectIngredientsViewController(saveCellsAction: addIngredientCells)
         
         navigationController?.pushViewController(selectViewController, animated: true)
@@ -93,6 +103,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
 
     // Adding the cells with one textField, also highlited this cells if needed + updateButtomDone
     func addInputCells() {
+        logger.printLog("Tap button adding input cells")
         tableView.beginUpdates()
         let indexPath = editModel.appEnd(section: 3, ingredient: nil)
         tableView.insertRows(at: [indexPath], with: .automatic)

@@ -14,6 +14,12 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     private var dishService = DishService(dishes: [], completion: nil)
     var indexPath: IndexPath?
     
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
     init(with dishes: [DishModel]) {
         super.init(nibName: nil, bundle: nil)
         dishService = DishService(dishes: dishes, completion: { [weak self] in
@@ -52,6 +58,7 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     
     // Create and present EditScreen
     @objc func presentEditScreen() {
+        logger.printLog("Tap create or edit dish button")
         var editScreen: EditDishViewController
         if let index = self.indexPath {
             editScreen = EditDishViewController(with: EditScreenModel(), saveAction: self.addDish(_:), whichIsFull: dishService.fetchDish(for: index))
