@@ -15,6 +15,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "366A19F12631AB9400D47F48"
+               BuildableName = "CookBookWidgetExtension.appex"
+               BlueprintName = "CookBookWidgetExtension"
+               ReferencedContainer = "container:CookBook.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "76AB6D8E25FF987E00F93B31"
                BuildableName = "CookBook.app"
                BlueprintName = "CookBook"
@@ -43,8 +57,18 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "366A19F12631AB9400D47F48"
+            BuildableName = "CookBookWidgetExtension.appex"
+            BlueprintName = "CookBookWidgetExtension"
+            ReferencedContainer = "container:CookBook.xcodeproj">
+         </BuildableReference>
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76AB6D8E25FF987E00F93B31"
@@ -52,7 +76,7 @@
             BlueprintName = "CookBook"
             ReferencedContainer = "container:CookBook.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
