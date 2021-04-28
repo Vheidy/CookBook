@@ -33,8 +33,7 @@ protocol NetworkProtocol {
 }
 
 class NetworkService: NetworkProtocol {
-    
-    
+        
     /// Create request for url and call it
     /// - Parameters:
     ///   - urlString: url in string format

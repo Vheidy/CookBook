@@ -8,17 +8,17 @@
 import UIKit
 
 struct Constants {
-    struct image {
+    struct Image {
         static let width: CGFloat = Constants.heightCell - 2 * Constants.margin
-        static let cornerRaduis: CGFloat = Constants.image.width / 2
+        static let cornerRaduis: CGFloat = Constants.Image.width / 2
     }
     
-    struct labelParameters {
+    struct LabelParameters {
         static let backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
         static let cornerRadius: CGFloat = 5
         static let topOffset = 15
         static let textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        struct font {
+        struct Font {
             static let fontName = UIFont(name: "Verdana", size: Constants.heightCell * 0.2)
             static let fontType = UIFont(name: "Verdana", size: Constants.heightCell * 0.15)
         }
@@ -33,7 +33,6 @@ class MainScreenTableViewCell: UITableViewCell {
     var nameLabel: UILabel?
     var dishTypeLabel: UILabel?
 
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -51,19 +50,19 @@ class MainScreenTableViewCell: UITableViewCell {
         name.translatesAutoresizingMaskIntoConstraints = false
         dishType.translatesAutoresizingMaskIntoConstraints = false
 
-        name.font = Constants.labelParameters.font.fontName
-        dishType.font = Constants.labelParameters.font.fontType
+        name.font = Constants.LabelParameters.Font.fontName
+        dishType.font = Constants.LabelParameters.Font.fontType
         
-        name.backgroundColor = Constants.labelParameters.backgroundColor
-        dishType.backgroundColor = Constants.labelParameters.backgroundColor
+        name.backgroundColor = Constants.LabelParameters.backgroundColor
+        dishType.backgroundColor = Constants.LabelParameters.backgroundColor
 
         name.numberOfLines = 2
         dishType.numberOfLines = 1
 
-        name.textColor = Constants.labelParameters.textColor
-        dishType.textColor = Constants.labelParameters.textColor
-        name.layer.cornerRadius = Constants.labelParameters.cornerRadius
-        dishType.layer.cornerRadius = Constants.labelParameters.cornerRadius
+        name.textColor = Constants.LabelParameters.textColor
+        dishType.textColor = Constants.LabelParameters.textColor
+        name.layer.cornerRadius = Constants.LabelParameters.cornerRadius
+        dishType.layer.cornerRadius = Constants.LabelParameters.cornerRadius
         name.layer.masksToBounds = true
         dishType.layer.masksToBounds = true
         
@@ -76,8 +75,7 @@ class MainScreenTableViewCell: UITableViewCell {
                 dishType.leadingAnchor.constraint(equalTo: dishImage!.trailingAnchor, constant: Constants.margin)
             ])
         }
-        
-        
+                
         self.nameLabel = name
         self.dishTypeLabel = dishType
     }
@@ -87,14 +85,13 @@ class MainScreenTableViewCell: UITableViewCell {
         contentView.addSubview(imageDish)
         imageDish.translatesAutoresizingMaskIntoConstraints = false
         
-        
         NSLayoutConstraint.activate([
             imageDish.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.margin),
             imageDish.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.margin),
             imageDish.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.margin),
-            imageDish.widthAnchor.constraint(equalToConstant:  Constants.image.width)
+            imageDish.widthAnchor.constraint(equalToConstant: Constants.Image.width)
         ])
-        imageDish.layer.cornerRadius = Constants.image.cornerRaduis
+        imageDish.layer.cornerRadius = Constants.Image.cornerRaduis
         imageDish.layer.masksToBounds = true
         
         self.dishImage = imageDish

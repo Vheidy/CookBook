@@ -10,23 +10,25 @@
 
 @implementation CBLogger
 
-//@synthesize delegate;
+@synthesize delegate;
 
 - (void)printLog:(NSString *) text {
     NSLog(@"Some interaction: %@", text);
 }
 
+@synthesize testBlock;
+
 - (void)saveNewInitialization {
     InitializationHandler *initHandler = [[InitializationHandler alloc] init];
     [initHandler saveInitialization];
-    NSLog(@"Number of initialization %ld", (long)[initHandler fetchNumberOfInitialization]);
-    NSLog(@"Everything is ok");
 }
 
-//- (void)printAllInitialization {
-//    if ([self.delegate respondsToSelector:@selector(printNumberOfInitialization)]) {
-//        [self.delegate printNumberOfInitialization];
-//    }
-//}
+- (void)printAllInitialization {
+    if ([self.delegate respondsToSelector:@selector(printNumberOfInitialization)]) {
+        [self.delegate printNumberOfInitialization];
+    } else {
+        testBlock();
+    }
+}
 
 @end

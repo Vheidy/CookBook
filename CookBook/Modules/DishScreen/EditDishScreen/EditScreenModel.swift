@@ -8,21 +8,21 @@
 import Foundation
 import UIKit
 
-//struct ConstantSection {
+// struct ConstantSection {
 //    let title: String
 //    let placeholderArray: [String]
-//}
+// }
 //
-//struct ConstantNamesView {
+// struct ConstantNamesView {
 //    static let array: [ConstantSection] = [ConstantSection(title: "Image", placeholderArray: []),
 //                                           ConstantSection(title: "Base Info", placeholderArray: ["Dish Name", "Dish Type"]),
 //                                           ConstantSection(title: "Ingredients", placeholderArray: ["Ingredient"]),
 //                                           ConstantSection(title: "Order of Action", placeholderArray: ["Action"]),
 //                                           ConstantSection(title: "Extra", placeholderArray: ["Cuisine", "Calories"])
 //    ]
-//}
+// }
 
-//struct DishModel {
+// struct DishModel {
 //    var name: String = ""
 //    var typeDish: String = ""
 //    var ingredient: [IngredientModel] = []
@@ -31,7 +31,7 @@ import UIKit
 //    var cuisine: String?
 //    var calories: Int32?
 //    var id: Date
-//}
+// }
 
 enum EditScreenItemType {
     case image
@@ -43,8 +43,6 @@ enum EditScreenHeaderType {
     case need(title: String)
     case notNeeded
 }
-
-
 
 struct EditScreenModelSection {
     let title: String
@@ -73,33 +71,43 @@ enum EditScreenBaseInfoType {
 
 enum EditScreenConvertationModelHelper {
 
-
     static func convertate(with dish: DishModel) -> [EditScreenModelSection] {
         var array = [EditScreenModelSection]()
-
+        
         array.append(EditScreenModelSection(title: "Image", items: [.image]))
-        array.append(EditScreenModelSection(title: "Base Info", items: [.inputItem(placeholder: "Dish Name", inputedText: dish.name), .inputItem(placeholder: "Dish Type", inputedText: dish.typeDish)]))
+        array.append(EditScreenModelSection(title: "Base Info",
+                                            items: [.inputItem(placeholder: "Dish Name",
+                                                               inputedText: dish.name), .inputItem(placeholder: "Dish Type",
+                                                                                                   inputedText: dish.typeDish)]))
         
         var ingredientItems = [EditScreenItemType]()
         for ingredient in dish.ingredient {
             ingredientItems.append(.labelItem(title: ingredient.name))
         }
-        array.append(EditScreenModelSection(title: "Ingredients", needsHeader: .need(title: "Ingredients"), isRemovable: true, items: ingredientItems))
+        array.append(EditScreenModelSection(title: "Ingredients",
+                                            needsHeader: .need(title: "Ingredients"),
+                                            isRemovable: true,
+                                            items: ingredientItems))
 
         var actionsItems = [EditScreenItemType]()
         for action in dish.orderOfAction {
             actionsItems.append(.inputItem(placeholder: "Action", inputedText: action))
         }
-        array.append(EditScreenModelSection(title: "Order of Action", needsHeader: .need(title: "Order of Action"), isRemovable: true, items: actionsItems))
+        array.append(EditScreenModelSection(title: "Order of Action",
+                                            needsHeader: .need(title: "Order of Action"),
+                                            isRemovable: true,
+                                            items: actionsItems))
         let calories: String = (dish.calories != nil && dish.calories != 0) ? String(dish.calories!) : ""
-        array.append(EditScreenModelSection(title: "Extra", items: [.inputItem(placeholder: "Cuisine", inputedText: dish.cuisine), .inputItem(placeholder: "Calories", inputedText: calories)]))
+        array.append(EditScreenModelSection(title: "Extra",
+                                            items: [.inputItem(placeholder: "Cuisine",
+                                                               inputedText: dish.cuisine),
+                                                    .inputItem(placeholder: "Calories",
+                                                               inputedText: calories)]))
         
 //        array.append(EditScreenModelSection(title: "Extra", items: [.inputItem(placeholder: "Cuisine", inputedText: dish.cuisine), .inputItem(placeholder: "Calories", inputedText: String(dish.calories)?)]))
         
         return array
     }
-
-
 }
 
 class EditScreenModel {
@@ -107,11 +115,30 @@ class EditScreenModel {
     //    var sectionNames = ["Image", "Base Info", ]
     
     // Contains a structure of view in Edit Screen
-    private var array: [EditScreenModelSection] = [ EditScreenModelSection(title: "Image", needsHeader: .notNeeded, items: [.image]),
-                                                    EditScreenModelSection(title: "Base Info", needsHeader: .notNeeded, items: [.inputItem(placeholder: "Dish Name", inputedText: nil), .inputItem(placeholder: "Dish Type", inputedText: nil)]),
-                                                    EditScreenModelSection(title: "Ingredients", needsHeader: .need(title: "Ingredients"), isRemovable: true, items: []),
-                                                    EditScreenModelSection(title: "Order of Action", needsHeader: .need(title: "Order of Action"), isRemovable: true, items: [.inputItem(placeholder: "Action", inputedText: nil)]),
-                                                    EditScreenModelSection(title: "Extra", needsHeader: .notNeeded, items: [.inputItem(placeholder: "Cuisine", inputedText: nil), .inputItem(placeholder: "Calories", inputedText: nil)])
+    private var array: [EditScreenModelSection] = [ EditScreenModelSection(title: "Image",
+                                                                           needsHeader: .notNeeded,
+                                                                           items: [.image]),
+                                                    EditScreenModelSection(title: "Base Info",
+                                                                           needsHeader: .notNeeded,
+                                                                           items: [.inputItem(placeholder: "Dish Name",
+                                                                                              inputedText: nil),
+                                                                                   .inputItem(placeholder: "Dish Type",
+                                                                                              inputedText: nil)]),
+                                                    EditScreenModelSection(title: "Ingredients",
+                                                                           needsHeader: .need(title: "Ingredients"),
+                                                                           isRemovable: true,
+                                                                           items: []),
+                                                    EditScreenModelSection(title: "Order of Action",
+                                                                           needsHeader: .need(title: "Order of Action"),
+                                                                           isRemovable: true,
+                                                                           items: [.inputItem(placeholder: "Action",
+                                                                                              inputedText: nil)]),
+                                                    EditScreenModelSection(title: "Extra",
+                                                                           needsHeader: .notNeeded,
+                                                                           items: [.inputItem(placeholder: "Cuisine",
+                                                                                              inputedText: nil),
+                                                                                   .inputItem(placeholder: "Calories",
+                                                                                              inputedText: nil)])
     ]
     
     func setDish(_ dishModel: DishModel) {
@@ -122,14 +149,12 @@ class EditScreenModel {
         array.count
     }
     
-    
     // Return type of the cell
     func getRow(for indexPath: IndexPath) -> EditScreenItemType? {
         guard array.indices.contains(indexPath.section), array[indexPath.section].items.indices.contains(indexPath.row) else { return nil }
         return array[indexPath.section].items[indexPath.row]
     }
    
-    
     // Add the new cell in section and return the indexPath of this cell
 
     func appEnd(section: Int, ingredient: IngredientModel?) -> IndexPath {
@@ -180,8 +205,6 @@ class EditScreenModel {
         return array[section]
     }
     
-    
-    
     func getDocumentPath(with name: String) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         var path = paths[0] as String
@@ -189,7 +212,7 @@ class EditScreenModel {
         return path
     }
     
-    func saveImageToDocuments(image: UIImage, withName name: String){
+    func saveImageToDocuments(image: UIImage, withName name: String) {
         if let data = image.pngData() {
             let path = getDocumentPath(with: name)
             let imageFileUrl = URL(fileURLWithPath: path)
@@ -203,4 +226,3 @@ class EditScreenModel {
     }
     
 }
-

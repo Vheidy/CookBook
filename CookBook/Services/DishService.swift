@@ -83,11 +83,14 @@ class DishService {
         let request = NSFetchRequest<Dish>(entityName: "Dish")
         let sort = NSSortDescriptor(key: "id", ascending: false)
         request.sortDescriptors = [sort]
-        fetchController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: currentContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchController = NSFetchedResultsController(fetchRequest: request,
+                                                     managedObjectContext: currentContext,
+                                                     sectionNameKeyPath: nil,
+                                                     cacheName: nil)
         do {
             try fetchController.performFetch()
             guard let dishes = fetchController.fetchedObjects else { return }
-            if let dish = dishes.first,  let dishModel = transormInDishModel(dishObject: dish) {
+            if let dish = dishes.first, let dishModel = transormInDishModel(dishObject: dish) {
                 saveData(dishModel)
             }
         } catch {
@@ -107,9 +110,21 @@ class DishService {
     }
     
     private func transormInDishModel(dishObject: Dish) -> DishModel? {
-        guard let ingredients = dishObject.ingredients as? Set<Ingredient>, let arrayOfIngredients = transform(ingredients: ingredients),  let actions = dishObject.orderOfActions as? Set<Action>, let arrayOfActions = transform(actions: actions), let name = dishObject.name, let typeDish = dishObject.typeDish, let id = dishObject.id  else { return nil}
+        guard let ingredients = dishObject.ingredients as? Set<Ingredient>,
+              let arrayOfIngredients = transform(ingredients: ingredients),
+              let actions = dishObject.orderOfActions as? Set<Action>,
+              let arrayOfActions = transform(actions: actions),
+              let name = dishObject.name, let typeDish = dishObject.typeDish,
+              let id = dishObject.id
+        else { return nil}
         
-        return DishModel(name: name, typeDish: typeDish, ingredient: arrayOfIngredients, orderOfAction: arrayOfActions, imageName: dishObject.imageName, cuisine: dishObject.cuisine, calories: dishObject.calories, id: id)
+        return DishModel(name: name, typeDish: typeDish,
+                         ingredient: arrayOfIngredients,
+                         orderOfAction: arrayOfActions,
+                         imageName: dishObject.imageName,
+                         cuisine: dishObject.cuisine,
+                         calories: dishObject.calories,
+                         id: id)
     }
     
     // Transforn [Action] -> [String]
@@ -150,9 +165,7 @@ class DishService {
         return displayModel
     }
     
-
-    //MARK: - Add Dish in Core Data
-
+    // MARK: - Add Dish in Core Data
     // Transform DishModel in DishObject and save it in Coredata
     func addDish(dish: DishModel, completion: VoidCallback?) {
         let dishObject = Dish(context: currentContext)
@@ -162,7 +175,6 @@ class DishService {
         dishObject.id = dish.id
         dishObject.imageName = dish.imageName
         dishObject.calories = dish.calories ?? 0
-        
         
         transormActionsInObjects(dish, dishObject)
         addIngredientsandSaveContext(dish, dishObject)

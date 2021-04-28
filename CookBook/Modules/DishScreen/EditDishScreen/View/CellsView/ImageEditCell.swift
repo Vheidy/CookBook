@@ -8,26 +8,23 @@
 import UIKit
 
 struct Parameters {
-    struct image {
+    struct Image {
         static let height: CGFloat = 100
         static let topMargin: CGFloat = 40
     }
-    struct button {
+    struct Button {
         static let topMardin: CGFloat = 10
     }
 }
-
-
 
 class ImageEditCell: UITableViewCell {
     
     var editButton: UIButton?
     var imageDish: UIImageView?
-    var addPhoto: (() -> ())?
+    var addPhoto: VoidCallback?
     
 //    static let identifier = "ImageEditCell"
 
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -42,7 +39,6 @@ class ImageEditCell: UITableViewCell {
         contentView.addSubview(editButton)
         editButton.translatesAutoresizingMaskIntoConstraints = false
         
-        
         editButton.setTitle("Add photo", for: .normal)
         editButton.setTitleColor(.systemBlue, for: .normal)
         editButton.titleLabel?.font = UIFont(name: "Verdana", size: 15)
@@ -53,12 +49,12 @@ class ImageEditCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             editButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            editButton.topAnchor.constraint(equalTo: image.bottomAnchor, constant: Parameters.button.topMardin),
+            editButton.topAnchor.constraint(equalTo: image.bottomAnchor, constant: Parameters.Button.topMardin),
             editButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.margin
             )
         ])
         
-        editButton.addAction(UIAction(handler: { [unowned self] action in
+        editButton.addAction(UIAction(handler: { [unowned self] _ in
             self.addPhoto?()
         }), for: .touchUpInside)
         
@@ -72,14 +68,14 @@ class ImageEditCell: UITableViewCell {
         contentView.addSubview(imageDish)
         imageDish.translatesAutoresizingMaskIntoConstraints = false
         
-        imageDish.layer.cornerRadius = Parameters.image.height / 2
+        imageDish.layer.cornerRadius = Parameters.Image.height / 2
         imageDish.layer.masksToBounds = true
         
         NSLayoutConstraint.activate([
             imageDish.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imageDish.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Parameters.image.topMargin),
-            imageDish.widthAnchor.constraint(equalToConstant: Parameters.image.height),
-            imageDish.heightAnchor.constraint(equalToConstant: Parameters.image.height)
+            imageDish.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Parameters.Image.topMargin),
+            imageDish.widthAnchor.constraint(equalToConstant: Parameters.Image.height),
+            imageDish.heightAnchor.constraint(equalToConstant: Parameters.Image.height)
         ])
         
         self.imageDish = imageDish

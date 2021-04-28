@@ -8,7 +8,7 @@
 import UIKit
 
 class SelectTableViewCell: UITableViewCell {
-    
+
     var title: UILabel?
     var selectButton: UIButton?
     var id: String?
@@ -17,12 +17,12 @@ class SelectTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureContent()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -36,7 +36,6 @@ class SelectTableViewCell: UITableViewCell {
         
         contentView.addSubview(title)
         contentView.addSubview(selectButton)
-        
         
         title.font = UIFont(name: "Verdana", size: 20)
         title.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -71,6 +70,5 @@ class SelectTableViewCell: UITableViewCell {
             selectButton?.isHidden = true
         }
     }
-    
 
 }

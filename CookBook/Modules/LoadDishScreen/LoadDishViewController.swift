@@ -55,8 +55,7 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         present(alertController, animated: true, completion: nil)
     }
     
-    //MARK: UISearchBarDelegate implementation
-    
+    // MARK: UISearchBarDelegate implementation
     /// This method calls when searchButton taped
     /// - Parameter searchBar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -78,7 +77,7 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         searchService.search(for: text, successPath: collectionView.reloadData, failurePath: showErrorAlert(with:))
     }
     
-    //MARK: UICollectionViewDataSource and Delegate implementation
+    // MARK: UICollectionViewDataSource and Delegate implementation
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         searchService.numberOfSections
@@ -91,7 +90,8 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.row {
         case 0:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell", for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultViewCell",
+                                                                for: indexPath) as? SearchResultViewCell else { return UICollectionViewCell()}
             if let item = searchService.fetchItem(for: indexPath) {
                 downloadImage(item.image) { (imageView) in
                     cell.configure(image: imageView.image, title: item.label)
@@ -122,13 +122,12 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
             case .failure(let error):
                 print(error)
                 complition?(UIImageView(image: UIImage(named: "breakfast")))
-            case .success( _):
+            case .success(_):
                 complition?(imageView)
             }
         }
     }
   
-    
     /// Return image from url or standart image
     /// - Parameter urlString: url for image in string format
     private func fetchImage(from urlString: String) -> UIImage? {
@@ -154,8 +153,7 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         present(safariVC, animated: true, completion: nil)
     }
 
-    //MARK: Setup implemetation
-    
+    // MARK: Setup implemetation
     
     /// This method needs to end editing when user tap somewhere on the screen
     private func addGestureRecognizerForView() {
@@ -192,7 +190,6 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
         ])
     }
     
-    
     /// Set some parameters for collectionView and cusomSearchBar
     private func setParameters() {
         collectionView.dataSource = self
@@ -217,7 +214,7 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func createLayout() -> UICollectionViewLayout {
         
-        return UICollectionViewCompositionalLayout  { (section, env) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { (_, _) -> NSCollectionLayoutSection? in
             let mainItem = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(3/4),
@@ -246,7 +243,6 @@ class LoadDishViewController: UIViewController, UICollectionViewDataSource, UICo
                     heightDimension: .fractionalHeight(1.0)),
                 subitem: pairItem,
                 count: 2)
-            
             
             let mainWithPairGroup = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(

@@ -8,7 +8,6 @@
 import UIKit
 import CoreData
 
-
 class IngredientScreenTableViewController: UITableViewController {
     
     private lazy var ingredientService =  IngredientsService()
@@ -49,7 +48,7 @@ class IngredientScreenTableViewController: UITableViewController {
         logger.saveNewInitialization()
         let alertController = UIAlertController(title: "Add ingredient", message: "Enter ingredient name", preferredStyle: .alert)
         
-        let actionDone = UIAlertAction(title: "Ok", style: .default) { [unowned self] action in
+        let actionDone = UIAlertAction(title: "Ok", style: .default) { [unowned self] _ in
             
             guard let textField = alertController.textFields?.first, let nameToSave = textField.text, !nameToSave.isEmpty else { return }
             ingredientService.addIngredient(IngredientModel(name: nameToSave, id: UUID().uuidString)) { [weak self] in

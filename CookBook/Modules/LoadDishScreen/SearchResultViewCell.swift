@@ -18,8 +18,7 @@ class SearchResultViewCell: UICollectionViewCell {
         setup()
     }
     
-    func setup()
-    {
+    func setup() {
         let stackView = UIStackView(arrangedSubviews: [imageDish, label])
         contentView.addSubview(stackView)
         stackView.alignment = .fill
@@ -34,7 +33,6 @@ class SearchResultViewCell: UICollectionViewCell {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
-
         
         contentView.backgroundColor = #colorLiteral(red: 0.9332640171, green: 0.9333797693, blue: 0.9371676445, alpha: 1)
         contentView.layer.cornerRadius = 30
@@ -43,7 +41,6 @@ class SearchResultViewCell: UICollectionViewCell {
         imageDish.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        
         label.numberOfLines = 0
         label.textAlignment = .center
         imageDish.layer.cornerRadius = 10
@@ -52,7 +49,6 @@ class SearchResultViewCell: UICollectionViewCell {
         label.font = UIFont(name: "Kohinoor Telugu", size: 20)
         
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

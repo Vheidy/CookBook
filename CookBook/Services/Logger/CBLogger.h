@@ -11,16 +11,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//@protocol FetchAllInitializationsDelegate
-//
-//@required
-//- (void)printNumberOfInitialization;
-//
-//@end
+@protocol FetchAllInitializationsDelegate <NSObject>
+
+@required
+- (void)printNumberOfInitialization;
+
+@end
 
 @interface CBLogger : NSObject
 
-//@property (weak, nonatomic, nullable) id<FetchAllInitializationsDelegate> delegate;
+@property (weak, nonatomic, nullable) id<FetchAllInitializationsDelegate> delegate;
+@property (nonatomic, copy, nullable) void (^testBlock)(void);
 
 - (void)printLog:(NSString *)text;
 - (void)printAllInitialization;
