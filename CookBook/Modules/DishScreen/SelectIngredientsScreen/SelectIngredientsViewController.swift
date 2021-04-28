@@ -10,16 +10,21 @@ import UIKit
 class SelectIngredientsViewController: UITableViewController {
 
     var ingredientService: IngredientsService
-    var saveSelectedCells: (_ cells: [IngredientModel]) -> ()
+    var saveSelectedCells: (_ cells: [IngredientModel]) -> Void
     
-    init(saveCellsAction: @escaping (_ cells: [IngredientModel]) -> ()) {
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
+    init(saveCellsAction: @escaping (_ cells: [IngredientModel]) -> Void) {
         ingredientService = IngredientsService()
         saveSelectedCells = saveCellsAction
         super.init(nibName: nil, bundle: nil)
         setup()
     }
-    
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -44,7 +49,8 @@ class SelectIngredientsViewController: UITableViewController {
         let section = 0
         
         for row in 0...tableView.numberOfRows(inSection: section) {
-            guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: section)) as? SelectTableViewCell, let selectButton = cell.selectButton else {break}
+            guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: section)) as? SelectTableViewCell,
+                  let selectButton = cell.selectButton else {break}
             
             if !selectButton.isHidden {
                 guard let name = cell.title?.text, let id = cell.id else { break }
@@ -59,7 +65,6 @@ class SelectIngredientsViewController: UITableViewController {
     @objc func closeScreen() {
         navigationController?.popToRootViewController(animated: true)
     }
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         ingredientService.ingredientsCount
@@ -83,6 +88,4 @@ class SelectIngredientsViewController: UITableViewController {
         
         return cell
     }
-    
-    
 }

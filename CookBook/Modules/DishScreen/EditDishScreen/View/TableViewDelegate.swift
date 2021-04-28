@@ -64,7 +64,7 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
             }
             cell.addPhoto = self.addPhoto
             return cell
-        case .inputItem(let placeholder,  let inputedText):
+        case .inputItem(let placeholder, let inputedText):
             return createInputItem(placeholder: placeholder, indexPath: indexPath, inputedText: inputedText)
         case .labelItem(let title):
             return createLabelItem(title: title, indexPath: indexPath)
@@ -81,7 +81,8 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func createInputItem(placeholder: String, indexPath: IndexPath, inputedText: String?) -> InputViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "InputViewCell", for: indexPath) as? InputViewCell else { return InputViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "InputViewCell",
+                                                       for: indexPath) as? InputViewCell else { return InputViewCell() }
         
         cell.configure(with: placeholder)
         if isFull {

@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 //
-//class IngredientEditTableViewController: UITableViewController, UITextFieldDelegate {
+// class IngredientEditTableViewController: UITableViewController, UITextFieldDelegate {
 //    
 //    var model = IngredientEditModel()
 //    var ingredient: IngredientModel?
@@ -29,9 +29,13 @@ import CoreData
 //    
 //    private func setup() {
 //        navigationItem.title = "Edit"
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(addIngredient))
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(closeScreen))
-//        
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+//                                                            target: self,
+//                                                            action: #selector(addIngredient))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancelб
+//                                                           target: self,
+//                                                           action: #selector(closeScreen))
+////        
 //        tableView.tableFooterView = UIView(frame: .zero)
 //        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnScreen)))
 //        
@@ -85,7 +89,9 @@ import CoreData
 //        
 //        switch row {
 //        case .inputItem(let placeholder, _):
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StandartViewCell", for: indexPath) as? StandartViewCell else { return StandartViewCell() }
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "StandartViewCell",
+//                                                           for: indexPath) as? StandartViewCell
+//            else { return StandartViewCell() }
 //            
 //            cell.configure(with: placeholder)
 //            cell.textField?.delegate = self
@@ -102,4 +108,4 @@ import CoreData
 //        fatalError("init(coder:) has not been implemented")
 //    }
 //    
-//}
+// }

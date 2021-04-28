@@ -17,8 +17,8 @@ protocol RecipeProvider {
 
 struct PathCreater {
     private enum Constants {
-        static let app_id = "0f316485"
-        static let app_key = "a82e1ac9423ea6eee0c5137a0a58940a"
+        static let appID = "0f316485"
+        static let appKey = "a82e1ac9423ea6eee0c5137a0a58940a"
         static let basedURL = "https://api.edamam.com/search"
     }
     
@@ -26,7 +26,7 @@ struct PathCreater {
     /// - Parameter query: search keyword
     /// - Returns: url in string format
     static func fetchPath(for query: String) -> String {
-        return "\(Constants.basedURL)?app_id=\(Constants.app_id)&app_key=\(Constants.app_key)&q=\(query)"
+        return "\(Constants.basedURL)?app_id=\(Constants.appID)&app_key=\(Constants.appKey)&q=\(query)"
     }
 }
 
@@ -58,8 +58,7 @@ class SearchService: RecipeProvider {
             return 3
         }
     }
-    
-    
+        
     /// Return the collectionViewItem for indexPath
     /// - Parameter indexPath: indexPath of requires cells
     /// - Returns: Recipe model
@@ -95,7 +94,7 @@ class SearchService: RecipeProvider {
                     failurePath?(errorDescription)
                 }
             case .success(let response):
-                if response.hits.count > 0 {
+                if !response.hits.isEmpty {
                     self.updateStore(with: response)
                     DispatchQueue.main.async {
                         successPath?()
@@ -108,11 +107,10 @@ class SearchService: RecipeProvider {
             }
         }
     }
-
     
     /// Update recipeStore for new response
     private func updateStore(with response: ResponseModel) {
-        recipeStore = response.hits.map( { $0.recipe })
+        recipeStore = response.hits.map({ $0.recipe })
     }
     
 }

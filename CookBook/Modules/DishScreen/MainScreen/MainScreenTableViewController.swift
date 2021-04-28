@@ -8,11 +8,16 @@
 import UIKit
 import CoreData
 
-
 class MainScreenTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
     private var dishService = DishService(dishes: [], completion: nil)
     var indexPath: IndexPath?
+    
+    private lazy var logger = CBLogger()
+
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
     
     init(with dishes: [DishModel]) {
         super.init(nibName: nil, bundle: nil)
@@ -36,12 +41,11 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     private func setup() {
         navigationItem.title = "CookBook"
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add , target: self, action: #selector(presentEditScreen))
+        let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(presentEditScreen))
         addButton.accessibilityLabel = "Add new dish"
         navigationItem.setRightBarButton(addButton, animated: true)
         tableView.register(MainScreenTableViewCell.self, forCellReuseIdentifier: "cell")
     }
-    
     
     // Add dish to the model
     func addDish(_ dish: DishModel) {
@@ -52,6 +56,7 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     
     // Create and present EditScreen
     @objc func presentEditScreen() {
+        logger.printLog("Tap create or edit dish button")
         var editScreen: EditDishViewController
         if let index = self.indexPath {
             editScreen = EditDishViewController(with: EditScreenModel(), saveAction: self.addDish(_:), whichIsFull: dishService.fetchDish(for: index))
@@ -88,12 +93,13 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? MainScreenTableViewCell else {return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
+                                                       for: indexPath) as? MainScreenTableViewCell
+        else {return UITableViewCell() }
         cell.dishImage?.image = UIImage(named: "dish")
         if let item = dishService.getFields(for: indexPath) {
             cell.nameLabel?.text = item.name
             cell.dishTypeLabel?.text = item.type
-            // FIXME: Change this
             cell.dishImage?.image = item.image ?? UIImage(named: "dish")
             cell.isAccessibilityElement = true
             cell.accessibilityHint = "You can tap and see more information"

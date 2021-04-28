@@ -8,10 +8,10 @@
 import UIKit
 import CoreData
 
-
 class IngredientScreenTableViewController: UITableViewController {
     
     private lazy var ingredientService =  IngredientsService()
+    private lazy var logger = CBLogger()
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -38,18 +38,27 @@ class IngredientScreenTableViewController: UITableViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        logger.printLog("Screen did appear")
+    }
+    
     // Present alert to input ingredient name
     @objc func presentEditScreen() {
+        logger.printLog("Tap add button")
+        logger.saveNewInitialization()
         let alertController = UIAlertController(title: "Add ingredient", message: "Enter ingredient name", preferredStyle: .alert)
         
-        let actionDone = UIAlertAction(title: "Ok", style: .default) { [unowned self] action in
+        let actionDone = UIAlertAction(title: "Ok", style: .default) { [unowned self] _ in
             
             guard let textField = alertController.textFields?.first, let nameToSave = textField.text, !nameToSave.isEmpty else { return }
             ingredientService.addIngredient(IngredientModel(name: nameToSave, id: UUID().uuidString)) { [weak self] in
                 self?.tableView.reloadData()
             }
+            logger.printLog("Tap Ok button")
         }
-        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] _ in
+            self.logger.printLog("Tap Cancel button")
+        }
         
         alertController.addAction(actionDone)
         alertController.addAction(actionCancel)
