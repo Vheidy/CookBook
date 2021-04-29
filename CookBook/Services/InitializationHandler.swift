@@ -8,41 +8,36 @@
 import UIKit
 import CoreData
 
+@objc class MockSaveObject: NSObject, SaveObjectProtocol {
+    var initialNumber = 0
+    
+    func save(objectName: String) throws {
+        initialNumber += 1
+    }
+    
+    func fetchObjectsCount(request: NSFetchRequest<NSManagedObject>) -> Int {
+        initialNumber
+    }
+}
+
 @objc class InitializationHandler: NSObject {
 
-    private let coreDataService: CoreDataService
+    private let coreDataService: SaveObjectProtocol
     
-    override init() {
-        coreDataService = CoreDataService()
+@objc init(service: SaveObjectProtocol) {
+        coreDataService = service
     }
     
     @objc func saveInitialization() {
-//        DispatchQueue.global(qos: .default).async {
-            let currentContext = self.coreDataService.persistentContainer.newBackgroundContext()
-            
-            let initObject = Initialization(context: currentContext)
-            initObject.id = UUID()
-            do {
-                try currentContext.save()
-//                print("ok")
-            } catch let error as NSError {
-                print("Could not save new initialization. \(error), \(error.userInfo)")
-            }
-//        }
+        do {
+            try coreDataService.save(objectName: "Initialization")
+        } catch {
+            print("Could not save new initialization. \(error)")
+        }
     }
     
     @objc func fetchNumberOfInitialization() -> Int {
-        let currentContext = coreDataService.persistentContainer.newBackgroundContext()
-        
-//        let fetchRequest = NSFetchRequest<Initialization>()
-                let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Initialization")
-        do {
-            let ingredientsObjects = try currentContext.fetch(fetchRequest)
-            return ingredientsObjects.count
-        } catch {
-            print(error)
-            return 0
-        }
-        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Initialization")
+        return coreDataService.fetchObjectsCount(request: fetchRequest)
     }
 }
