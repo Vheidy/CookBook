@@ -8,18 +8,6 @@
 import UIKit
 import CoreData
 
-@objc class MockSaveObject: NSObject, SaveObjectProtocol {
-    var initialNumber = 0
-    
-    func save(objectName: String) throws {
-        initialNumber += 1
-    }
-    
-    func fetchObjectsCount(request: NSFetchRequest<NSManagedObject>) -> Int {
-        initialNumber
-    }
-}
-
 @objc class InitializationHandler: NSObject {
 
     private let coreDataService: SaveObjectProtocol
@@ -28,6 +16,7 @@ import CoreData
         coreDataService = service
     }
     
+    /// This method should called when you want to save current initialization
     @objc func saveInitialization() {
         do {
             try coreDataService.save(objectName: "Initialization")
@@ -36,6 +25,8 @@ import CoreData
         }
     }
     
+    /// This method return current number of app inittialization
+    /// - Returns: Number of initialization
     @objc func fetchNumberOfInitialization() -> Int {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Initialization")
         return coreDataService.fetchObjectsCount(request: fetchRequest)

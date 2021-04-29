@@ -6,26 +6,67 @@
 //
 
 import XCTest
+@testable import CookBook
+import CoreData
+
+@objc class MockSaveObject: NSObject, SaveObjectProtocol {
+    var initialNumber = 0
+    
+    func save(objectName: String) throws {
+        initialNumber += 1
+    }
+    
+    func fetchObjectsCount(request: NSFetchRequest<NSManagedObject>) -> Int {
+        initialNumber
+    }
+}
 
 class InitializationHandlerTest: XCTestCase {
+    
+    var testingHandler: InitializationHandler!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() {
+        super.setUp()
+        let mock = MockSaveObject()
+        self.testingHandler = InitializationHandler(service: mock)
+    }
+    
+    override  func tearDown() {
+        self.testingHandler = nil
+        super.tearDown()
+    }
+    
+    func testFirstInitialization() {
+        testingHandler.saveInitialization()
+        let result = testingHandler.fetchNumberOfInitialization()
+        XCTAssertEqual(result, 1, "First initialization is not 1, result value: \(result)")
+    }
+    
+    func testWithoutSave() {
+        let result = testingHandler.fetchNumberOfInitialization()
+        XCTAssertEqual(result, 0, "Initialization without first save isn't 0, result value: \(result)")
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
+    func testRunTenTimes() throws {
         measure {
-            // Put the code you want to measure the time of here.
+            testingHandler.saveInitialization()
+        }
+        let result = testingHandler.fetchNumberOfInitialization()
+        XCTAssertEqual(result, 10, "Count initialization is not the same value that the fetch return, result value: \(result)")
+    }
+    
+    func testRunTenTimesWithoutSave() throws {
+        measure {
+            let result = testingHandler.fetchNumberOfInitialization()
+            XCTAssertEqual(result, 0, "Count initialization is not the same value that the fetch return, result value: \(result)")
+        }
+    }
+    
+    func testRunTenTimesWithOneSave() throws {
+        testingHandler.saveInitialization()
+        measure {
+            let result = testingHandler.fetchNumberOfInitialization()
+            XCTAssertEqual(result, 1, "Count initialization is not the same value that the fetch return, result value: \(result)")
         }
     }
 
