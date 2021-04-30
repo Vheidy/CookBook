@@ -12,7 +12,7 @@ import CoreData
 @objc class MockSaveObject: NSObject, SaveObjectProtocol {
     var initialNumber = 0
     
-    func save(objectName: String) throws {
+    func save(objectName: String, params: [String: Any]) throws {
         initialNumber += 1
     }
     
@@ -26,19 +26,22 @@ class InitializationHandlerTest: XCTestCase {
     var testingHandler: InitializationHandler!
 
     override func setUp() {
-        super.setUp()
         let mock = MockSaveObject()
         self.testingHandler = InitializationHandler(service: mock)
     }
     
     override  func tearDown() {
         self.testingHandler = nil
-        super.tearDown()
     }
     
     func testFirstInitialization() {
+        // Given
         testingHandler.saveInitialization()
+        
+        // When
         let result = testingHandler.fetchNumberOfInitialization()
+        
+        // Then
         XCTAssertEqual(result, 1, "First initialization is not 1, result value: \(result)")
     }
     

@@ -9,17 +9,17 @@ import UIKit
 import CoreData
 
 @objc class InitializationHandler: NSObject {
-
+    
     private let coreDataService: SaveObjectProtocol
     
-@objc init(service: SaveObjectProtocol) {
+    @objc init(service: SaveObjectProtocol) {
         coreDataService = service
     }
     
     /// This method should called when you want to save current initialization
     @objc func saveInitialization() {
         do {
-            try coreDataService.save(objectName: "Initialization")
+            try coreDataService.save(objectName: "Initialization", params: [:])
         } catch {
             print("Could not save new initialization. \(error)")
         }

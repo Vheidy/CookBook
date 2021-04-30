@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 @objc protocol SaveObjectProtocol {
-    func save(objectName: String) throws
+    func save(objectName: String, params: [String: Any]) throws
     func fetchObjectsCount(request: NSFetchRequest<NSManagedObject>) -> Int
 }
 
@@ -37,10 +37,13 @@ import CoreData
         }
     }
     
-    func save(objectName: String) throws {
+    func save(objectName: String, params: [String: Any] = [:]) throws {
         let currentContext = self.persistentContainer.newBackgroundContext()
         
         let object = NSEntityDescription.insertNewObject(forEntityName: objectName, into: currentContext)
+        for (key, value) in params {
+            object.setValue(value, forKey: key)
+        }
         if let initObject = object as? Initialization {
             initObject.id = UUID()
         }
@@ -71,4 +74,3 @@ import CoreData
         }
     }
 }
-
