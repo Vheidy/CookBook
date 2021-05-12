@@ -156,10 +156,14 @@ class DishService {
         let dish = fetchController.object(at: indexPath)
         guard let name = dish.name, let dishType = dish.typeDish else { return nil }
         if let imageName = dish.imageName {
-            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-            var path = paths[0] as String
-            path.append(imageName)
-            imageDish = UIImage(contentsOfFile: path)
+            let imageManager = DataFileManager()
+            if let data = imageManager.read(fromDocumentsWithFileName: imageName) {
+                
+                imageDish = UIImage(data: data)
+            }
+//            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//            var path = paths[0] as String
+//            path.append(imageName)
         }
         let displayModel = DisplayItem(name: name, type: dishType, image: imageDish)
         return displayModel

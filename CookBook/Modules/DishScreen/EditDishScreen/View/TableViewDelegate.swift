@@ -56,14 +56,9 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         switch row {
         case .image:
             let cell = ImageEditCell()
-            if let name = dish.imageName {
-                let path = editModel.getNewDocumentPath(with: name)
-                do {
-                    let data = try Data(contentsOf: path)
-                    cell.imageDish?.image = UIImage(data: data)
-                } catch {
-                    print(error)
-                }
+            let dataManager = DataFileManager()
+            if let name = dish.imageName, let data = dataManager.read(fromDocumentsWithFileName: name)  {
+                cell.imageDish?.image = UIImage(data: data)
             } else {
                 cell.imageDish?.image = UIImage(named: "plate")
             }
