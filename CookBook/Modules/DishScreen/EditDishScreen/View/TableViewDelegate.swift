@@ -17,7 +17,7 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         switch cell.needsHeader {
         case .need(let title):
             let headerView: CustomHeader
-            if sectionTitle == "Ingredients", TabBarViewController.extraFunctionality {
+            if sectionTitle == "Ingredients", ExtraFunctionality.enabled  {
                 headerView = CustomHeader(title: title, section: section, addCells: presentChooseIngredientScreen)
             } else {
                 headerView = CustomHeader(title: title, section: section, addCells: addInputCells)
@@ -104,6 +104,8 @@ extension EditDishViewController: UITextFieldDelegate {
             dish.typeDish = textField.text ?? ""
         case "Action":
             dish.orderOfAction.append(textField.text ?? "")
+        case "Ingredient":
+            dish.ingredient.append(IngredientModel(name: textField.text ?? "", id: UUID().uuidString))
         default:
             break
         }

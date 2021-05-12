@@ -8,10 +8,14 @@
 import UIKit
 import SwiftUI
 
+struct ExtraFunctionality {
+    static var enabled = false
+}
+
 class TabBarViewController: UITabBarController {
 
     private lazy var logger = CBLogger()
-    static let extraFunctionality = false
+//    static let extraFunctionality = false
 
     override func viewDidAppear(_ animated: Bool) {
         let del = NSLogInitializationNumber()
@@ -44,7 +48,7 @@ class TabBarViewController: UITabBarController {
         var ncIngredient: UINavigationController?
         var ncLoad: UINavigationController?
         
-        if TabBarViewController.extraFunctionality {
+        if ExtraFunctionality.enabled {
             let ingredientScreenViewController = IngredientScreenTableViewController(nibName: nil, bundle: nil)
             ncIngredient = UINavigationController(rootViewController: ingredientScreenViewController)
             
@@ -63,7 +67,7 @@ class TabBarViewController: UITabBarController {
         mainViewController.tabBarItem.image = UIImage(systemName: "book")
         mainViewController.tabBarItem.title = "Dishes"
         
-        if TabBarViewController.extraFunctionality, let nc1 = ncLoad, let nc3 = ncIngredient {
+        if ExtraFunctionality.enabled, let nc1 = ncLoad, let nc3 = ncIngredient {
             
             viewControllers = [nc1, ncMain, nc3]
             selectedViewController = ncMain

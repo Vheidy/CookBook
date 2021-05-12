@@ -54,12 +54,18 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
         })
     }
     
+    func updateDish(_ dish: DishModel) {
+        dishService.updateDish(dish, completion: { [weak self] in
+            self?.tableView.reloadData()
+        })
+    }
+    
     // Create and present EditScreen
     @objc func presentEditScreen() {
         logger.printLog("Tap create or edit dish button")
         var editScreen: EditDishViewController
         if let index = self.indexPath {
-            editScreen = EditDishViewController(with: EditScreenModel(), saveAction: self.addDish(_:), whichIsFull: dishService.fetchDish(for: index))
+            editScreen = EditDishViewController(with: EditScreenModel(), saveAction: self.updateDish(_:), whichIsFull: dishService.fetchDish(for: index))
         } else {
             editScreen = EditDishViewController(with: EditScreenModel(), saveAction: self.addDish(_:), whichIsFull: nil)
         }

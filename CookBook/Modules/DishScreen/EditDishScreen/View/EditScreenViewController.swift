@@ -140,7 +140,6 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         updateButtonDone()
     }
     
-    
     // MARK: - All about highlighted cells
     
     // Check can the done button be enabled

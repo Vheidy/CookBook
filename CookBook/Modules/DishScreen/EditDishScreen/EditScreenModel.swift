@@ -162,7 +162,7 @@ class EditScreenModel {
        let indexPath = IndexPath(row: mySection.items.count, section: section)
        switch mySection.title {
        case "Ingredients":
-        if let newIngredient = ingredient, TabBarViewController.extraFunctionality {
+        if let newIngredient = ingredient, ExtraFunctionality.enabled {
             array[section].items.append(.labelItem(title: newIngredient.name))
         } else {
             array[section].items.append(.inputItem(placeholder: "Ingredient", inputedText: nil))
