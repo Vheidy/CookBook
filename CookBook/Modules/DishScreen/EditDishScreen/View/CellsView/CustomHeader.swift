@@ -10,18 +10,20 @@ import UIKit
 class CustomHeader: UITableViewHeaderFooterView {
     var title: UILabel?
     var addButton: UIButton?
-    var section: Int?
+    var section: Int
     var mainSubView: UIView?
     
     // Adding custom cells in section in EditController
-    var action: VoidCallback
+    var action: (Int) -> ()
     
-    init(title: String, section: Int, addCells: @escaping VoidCallback) {
+    
+    
+    init(title: String, section: Int, addCells: @escaping (Int) -> ()) {
         self.action = addCells
+        self.section = section
         super.init(reuseIdentifier: nil)
         configureContent()
         self.title?.text = title
-        self.section = section
     }
     
     private func configureContent() {
@@ -53,9 +55,10 @@ class CustomHeader: UITableViewHeaderFooterView {
         self.addButton = addButton
     }
     
+    
     private func setConstraints(mainSubView: UIView, title: UILabel, addButton: UIButton) {
         NSLayoutConstraint.activate([
-            mainSubView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
+            mainSubView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 28),
             mainSubView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainSubView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             mainSubView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -73,7 +76,7 @@ class CustomHeader: UITableViewHeaderFooterView {
     
     // Action for add cell in section of EditController
     @objc func didTap() {
-        action()
+        action(section)
     }
     
     required init?(coder: NSCoder) {

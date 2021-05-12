@@ -16,7 +16,8 @@
 }
 
 - (void)printNumberOfInitialization {
-    InitializationHandler *initHandler = [[InitializationHandler alloc] init];
+    CoreDataService *service = [[CoreDataService alloc] init];
+    InitializationHandler *initHandler = [[InitializationHandler alloc] initWithService: service];
     NSLog(@"Number of initialization %ld", (long)[initHandler fetchNumberOfInitialization]);
 }
 

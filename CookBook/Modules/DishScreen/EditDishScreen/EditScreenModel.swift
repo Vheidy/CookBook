@@ -39,7 +39,7 @@ enum EditScreenItemType {
     case labelItem(title: String)
 }
 
-enum EditScreenHeaderType {
+enum EditScreenHeaderType: Equatable {
     case need(title: String)
     case notNeeded
 }
@@ -162,8 +162,10 @@ class EditScreenModel {
        let indexPath = IndexPath(row: mySection.items.count, section: section)
        switch mySection.title {
        case "Ingredients":
-        if let newIngredient = ingredient {
+        if let newIngredient = ingredient, TabBarViewController.extraFunctionality {
             array[section].items.append(.labelItem(title: newIngredient.name))
+        } else {
+            array[section].items.append(.inputItem(placeholder: "Ingredient", inputedText: nil))
         }
        case "Order of Action":
         array[section].items.append(.inputItem(placeholder: "Action", inputedText: nil))
@@ -212,13 +214,21 @@ class EditScreenModel {
         return path
     }
     
+    func getNewDocumentPath(with name: String) -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let path = paths[0].appendingPathComponent(name)
+        return path
+    }
+    
     func saveImageToDocuments(image: UIImage, withName name: String) {
         if let data = image.pngData() {
-            let path = getDocumentPath(with: name)
-            let imageFileUrl = URL(fileURLWithPath: path)
+            let path = getNewDocumentPath(with: name)
+//            let imageFileUrl = URL(fileURLWithPath: path)
             do {
-                try data.write(to: imageFileUrl)
-                print("Successfully saved image at path: \(imageFileUrl)")
+                try FileManager.default.createDirectory(at: path, withIntermediateDirectories: true, attributes: nil)
+                try data.write(to: path)
+                print("Successfully saved image at path: \(path)")
             } catch {
                 print("Error saving image: \(error)")
             }

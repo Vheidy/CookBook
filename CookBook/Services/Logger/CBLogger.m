@@ -8,6 +8,8 @@
 #import "CBLogger.h"
 #import "CookBook-Swift.h"
 
+@class InitializationHandler;
+
 @implementation CBLogger
 
 @synthesize delegate;
@@ -19,7 +21,8 @@
 @synthesize testBlock;
 
 - (void)saveNewInitialization {
-    InitializationHandler *initHandler = [[InitializationHandler alloc] init];
+    CoreDataService *service = [[CoreDataService alloc] init];
+    InitializationHandler *initHandler = [[InitializationHandler alloc] initWithService: service];
     [initHandler saveInitialization];
 }
 

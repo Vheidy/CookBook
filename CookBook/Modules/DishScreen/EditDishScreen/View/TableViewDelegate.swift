@@ -17,7 +17,7 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         switch cell.needsHeader {
         case .need(let title):
             let headerView: CustomHeader
-            if sectionTitle == "Ingredients" {
+            if sectionTitle == "Ingredients", TabBarViewController.extraFunctionality {
                 headerView = CustomHeader(title: title, section: section, addCells: presentChooseIngredientScreen)
             } else {
                 headerView = CustomHeader(title: title, section: section, addCells: addInputCells)
@@ -57,8 +57,13 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         case .image:
             let cell = ImageEditCell()
             if let name = dish.imageName {
-                let path = editModel.getDocumentPath(with: name)
-                cell.imageDish?.image = UIImage(contentsOfFile: path)
+                let path = editModel.getNewDocumentPath(with: name)
+                do {
+                    let data = try Data(contentsOf: path)
+                    cell.imageDish?.image = UIImage(data: data)
+                } catch {
+                    print(error)
+                }
             } else {
                 cell.imageDish?.image = UIImage(named: "plate")
             }
@@ -96,7 +101,6 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension EditDishViewController: UITextFieldDelegate {
     
-    //FIXME: Do something with this
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField.placeholder {
         case "Dish Name":

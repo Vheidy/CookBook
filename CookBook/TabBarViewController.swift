@@ -11,6 +11,7 @@ import SwiftUI
 class TabBarViewController: UITabBarController {
 
     private lazy var logger = CBLogger()
+    static let extraFunctionality = false
 
     override func viewDidAppear(_ animated: Bool) {
         let del = NSLogInitializationNumber()
@@ -40,27 +41,36 @@ class TabBarViewController: UITabBarController {
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 
         self.isAccessibilityElement = true
-        let ingredientScreenViewController = IngredientScreenTableViewController(nibName: nil, bundle: nil)
-        let nc3 = UINavigationController(rootViewController: ingredientScreenViewController)
+        
+        var ncIngredient: UINavigationController?
+        var ncLoad: UINavigationController?
+        
+        if TabBarViewController.extraFunctionality {
+            let ingredientScreenViewController = IngredientScreenTableViewController(nibName: nil, bundle: nil)
+            ncIngredient = UINavigationController(rootViewController: ingredientScreenViewController)
+            
+            let loadViewController = LoadDishViewController()
+            ncLoad = UINavigationController(rootViewController: loadViewController)
+            
+            ingredientScreenViewController.tabBarItem.image = UIImage(systemName: "rectangle.fill.on.rectangle.fill")
+            loadViewController.tabBarItem.image = UIImage(systemName: "square.and.pencil")
+            
+            ingredientScreenViewController.tabBarItem.title = "Ingredients"
+            loadViewController.tabBarItem.title = "Popular"
+        }
         let mainViewController = MainScreenTableViewController(with: [])
-        let nc2 = UINavigationController(rootViewController: mainViewController)
-        let loadViewController = LoadDishViewController()
-        let nc1 = UINavigationController(rootViewController: loadViewController)
+        let ncMain = UINavigationController(rootViewController: mainViewController)
 
-        ingredientScreenViewController.tabBarItem.image = UIImage(systemName: "rectangle.fill.on.rectangle.fill")
         mainViewController.tabBarItem.image = UIImage(systemName: "book")
-        loadViewController.tabBarItem.image = UIImage(systemName: "square.and.pencil")
-
-        ingredientScreenViewController.tabBarItem.title = "Ingredients"
         mainViewController.tabBarItem.title = "Dishes"
-        loadViewController.tabBarItem.title = "Popular"
-
-//        let vc1 = UINavigationController(rootViewController: mainViewController)
-//        let vc2 = UINavigationController(rootViewController: ingredientScreenViewController)
-//        let vc3 = UINavigationController(rootViewController: loadViewController)
-//
-        setViewControllers( [nc1, nc2, nc3 ], animated: false)
-        selectedViewController = nc2
+        
+        if TabBarViewController.extraFunctionality, let nc1 = ncLoad, let nc3 = ncIngredient {
+            
+            viewControllers = [nc1, ncMain, nc3]
+            selectedViewController = ncMain
+        } else {
+            setViewControllers([ncMain], animated: true)
+//            viewControllers?.append(ncMain)
+        }
     }
-
 }

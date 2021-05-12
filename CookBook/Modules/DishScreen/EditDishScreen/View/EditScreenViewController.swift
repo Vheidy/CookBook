@@ -53,8 +53,27 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
         setTableView()
         setup()
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     // Needs to save dish in mainScreen and close editScreen
@@ -76,11 +95,20 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     // Present screen with ingredient selection functionality
-    @objc func presentChooseIngredientScreen() {
+    @objc func presentChooseIngredientScreen(in _: Int) {
         logger.printLog("Tap add ingredient button")
         let selectViewController = SelectIngredientsViewController(saveCellsAction: addIngredientCells)
         
         navigationController?.pushViewController(selectViewController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let modelSection = editModel.getSection(section: section)
+        if let condition = modelSection?.needsHeader, condition != .notNeeded {
+            return 60
+        } else {
+            return 0
+        }
     }
     
     // MARK: - Adding cells in sections
@@ -98,10 +126,10 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     // Adding the cells with one textField, also highlited this cells if needed + updateButtomDone
-    func addInputCells() {
+    func addInputCells(in section: Int) {
         logger.printLog("Tap button adding input cells")
         tableView.beginUpdates()
-        let indexPath = editModel.appEnd(section: 3, ingredient: nil)
+        let indexPath = editModel.appEnd(section: section, ingredient: nil)
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
         
@@ -111,6 +139,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         }
         updateButtonDone()
     }
+    
     
     // MARK: - All about highlighted cells
     
@@ -178,7 +207,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     
     private func setup() {
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.sectionHeaderHeight = UITableView.automaticDimension
+//        tableView.sectionHeaderHeight = UITableView.automaticDimension
         
         tableView.backgroundColor = #colorLiteral(red: 0.8979603648, green: 0.8980897069, blue: 0.8979321122, alpha: 1)
         
