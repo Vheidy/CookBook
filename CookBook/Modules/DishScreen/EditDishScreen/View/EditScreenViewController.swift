@@ -207,7 +207,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     
     private func setup() {
         tableView.rowHeight = UITableView.automaticDimension
-//        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         
         tableView.backgroundColor = #colorLiteral(red: 0.8979603648, green: 0.8980897069, blue: 0.8979321122, alpha: 1)
         

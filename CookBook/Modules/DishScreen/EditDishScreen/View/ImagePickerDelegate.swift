@@ -58,6 +58,7 @@ extension EditDishViewController:  PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
+    
         
         for result in results {
             let provider = result.itemProvider
@@ -65,10 +66,11 @@ extension EditDishViewController:  PHPickerViewControllerDelegate {
             if provider.canLoadObject(ofClass: UIImage.self) {
                 
                 provider.loadObject(ofClass: UIImage.self) { [unowned self] (image, error) in
-                    guard let currentImage = image as? UIImage else { return }
+                    guard error == nil, let currentImage = image as? UIImage, let data = currentImage.pngData() else { return }
                     self.imageView = currentImage
                     let name = UUID().uuidString + ".jpeg"
-                    editModel.saveImageToDocuments(image: currentImage, withName: name)
+                    let dataManager = DataFileManager()
+                    dataManager.saveDataToDocuments(data: data, withName: name)
                     dish.imageName = name
                     DispatchQueue.main.async {
                         tableView.reloadData()

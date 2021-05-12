@@ -12,7 +12,6 @@
 		362A315B2633055300A9D251 /* IngredientsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7670D3992611BB93007C97D4 /* IngredientsModel.xcdatamodeld */; };
 		366A19F32631AB9400D47F48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D84035263199FE00579F3B /* WidgetKit.framework */; };
 		366A19F42631AB9400D47F48 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D84037263199FE00579F3B /* SwiftUI.framework */; };
-		366A1A092631DC6600D47F48 /* DishService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A8663226009FF900F80B6A /* DishService.swift */; };
 		76169D822639BAFC00487146 /* InitializationHandlerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76169D812639BAFC00487146 /* InitializationHandlerTest.swift */; };
 		761AD4E926134138002D1C7F /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761AD4E826134138002D1C7F /* SelectTableViewCell.swift */; };
 		7635C12426021F3900BE3B89 /* ImageEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7635C12326021F3900BE3B89 /* ImageEditCell.swift */; };
@@ -39,6 +38,7 @@
 		76AB6DAC25FF9CFC00F93B31 /* MainScreenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AB6DAB25FF9CFC00F93B31 /* MainScreenTableViewController.swift */; };
 		76AB6DB325FF9FAA00F93B31 /* EditScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AB6DB225FF9FAA00F93B31 /* EditScreenViewController.swift */; };
 		76AB6DC025FFA7F700F93B31 /* IngredientScreenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AB6DBF25FFA7F700F93B31 /* IngredientScreenTableViewController.swift */; };
+		76D13D58264C1214002985CC /* DataFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D13D57264C1214002985CC /* DataFileManager.swift */; };
 		76D78FC926380D5C00A05E3D /* CookBookWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 366A19F22631AB9400D47F48 /* CookBookWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		76D78FDB2638393800A05E3D /* CBLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D78FDA2638393800A05E3D /* CBLogger.m */; };
 		76D78FE42638497C00A05E3D /* InitializationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D78FE32638497C00A05E3D /* InitializationHandler.swift */; };
@@ -119,6 +119,7 @@
 		76AB6DAB25FF9CFC00F93B31 /* MainScreenTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenTableViewController.swift; sourceTree = "<group>"; };
 		76AB6DB225FF9FAA00F93B31 /* EditScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreenViewController.swift; sourceTree = "<group>"; };
 		76AB6DBF25FFA7F700F93B31 /* IngredientScreenTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientScreenTableViewController.swift; sourceTree = "<group>"; };
+		76D13D57264C1214002985CC /* DataFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFileManager.swift; sourceTree = "<group>"; };
 		76D78FD82638393700A05E3D /* CookBook-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CookBook-Bridging-Header.h"; sourceTree = "<group>"; };
 		76D78FD92638393800A05E3D /* CBLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBLogger.h; sourceTree = "<group>"; };
 		76D78FDA2638393800A05E3D /* CBLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CBLogger.m; sourceTree = "<group>"; };
@@ -204,9 +205,10 @@
 			isa = PBXGroup;
 			children = (
 				7670D3A22611BDD3007C97D4 /* CoreData */,
-				76A8663226009FF900F80B6A /* DishService.swift */,
 				76D78FDE26383C3B00A05E3D /* Logger */,
+				76A8663226009FF900F80B6A /* DishService.swift */,
 				767E42D12608B77B001836BF /* IngredientService.swift */,
+				76D13D57264C1214002985CC /* DataFileManager.swift */,
 				76D78FE32638497C00A05E3D /* InitializationHandler.swift */,
 				766A73C3261F3FC600F6EC72 /* NetworkService.swift */,
 				76D78FD82638393700A05E3D /* CookBook-Bridging-Header.h */,
@@ -526,7 +528,6 @@
 				76FEC2F12638007400128C30 /* CookBookWidget.intentdefinition in Sources */,
 				76FEC2E42638005D00128C30 /* CookBookWidget.swift in Sources */,
 				362A31582633053900A9D251 /* CoreDataService.swift in Sources */,
-				366A1A092631DC6600D47F48 /* DishService.swift in Sources */,
 				362A315B2633055300A9D251 /* IngredientsModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -556,6 +557,7 @@
 				767FD812261B576C00945A5A /* TableViewDelegate.swift in Sources */,
 				767FD822261EF8D600945A5A /* CoreDataService.swift in Sources */,
 				766A73C4261F3FC600F6EC72 /* NetworkService.swift in Sources */,
+				76D13D58264C1214002985CC /* DataFileManager.swift in Sources */,
 				767FD81D261DEE6400945A5A /* SwiftUIView.swift in Sources */,
 				767FD815261B57CF00945A5A /* ImagePickerDelegate.swift in Sources */,
 				7670D3622608BEA2007C97D4 /* IngredientsEditScreen.swift in Sources */,

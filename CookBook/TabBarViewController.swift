@@ -21,7 +21,6 @@ class TabBarViewController: UITabBarController {
             logger.testBlock = del.printOfInitialization
         }
         logger.printAllInitialization()
-        logger.printLog("Screen did appear")
     }
 
     override func viewDidLoad() {

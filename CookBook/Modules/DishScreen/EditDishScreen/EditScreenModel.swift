@@ -127,7 +127,7 @@ class EditScreenModel {
                                                     EditScreenModelSection(title: "Ingredients",
                                                                            needsHeader: .need(title: "Ingredients"),
                                                                            isRemovable: true,
-                                                                           items: []),
+                                                                           items: [ .inputItem(placeholder: "Ingredient", inputedText: nil)]),
                                                     EditScreenModelSection(title: "Order of Action",
                                                                            needsHeader: .need(title: "Order of Action"),
                                                                            isRemovable: true,
@@ -206,33 +206,5 @@ class EditScreenModel {
         guard array.indices.contains(section) else { return nil }
         return array[section]
     }
-    
-    func getDocumentPath(with name: String) -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        var path = paths[0] as String
-        path.append(name)
-        return path
-    }
-    
-    func getNewDocumentPath(with name: String) -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let path = paths[0].appendingPathComponent(name)
-        return path
-    }
-    
-    func saveImageToDocuments(image: UIImage, withName name: String) {
-        if let data = image.pngData() {
-            let path = getNewDocumentPath(with: name)
-//            let imageFileUrl = URL(fileURLWithPath: path)
-            do {
-                try FileManager.default.createDirectory(at: path, withIntermediateDirectories: true, attributes: nil)
-                try data.write(to: path)
-                print("Successfully saved image at path: \(path)")
-            } catch {
-                print("Error saving image: \(error)")
-            }
-        }
-    }
-    
+ 
 }
