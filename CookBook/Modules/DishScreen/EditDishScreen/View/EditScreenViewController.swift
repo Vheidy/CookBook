@@ -45,8 +45,10 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         }
 
         self.tableView = UITableView()
-        
         super.init(nibName: nil, bundle: nil)
+        
+
+        
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -60,6 +62,9 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
                                                name: UIResponder.keyboardWillHideNotification, object: nil)
         setTableView()
         setup()
+        if isFull {
+            updateButtonDone()
+        }
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -91,7 +96,32 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     // Remove selection when text editing is over
     @objc func tapOnTableView() {
         view.endEditing(true)
+        
+        if editModel.getRowsInSectionCount(section: 2) != 0, editModel.getRowsInSectionCount(section: 3) != 0 {
+            updateActions()
+            updateIngredients()
+        }
+        
         isHightlight = true
+    }
+    
+    
+    private func updateActions() {
+        dish.orderOfAction = []
+        for row in 0..<editModel.getRowsInSectionCount(section: 3) {
+            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 3)) as? InputViewCell, let text = cell.textField?.text {
+                dish.orderOfAction.append(text)
+            }
+        }
+    }
+    
+    private func updateIngredients() {
+        dish.ingredient = []
+        for row in 0..<editModel.getRowsInSectionCount(section: 2) {
+            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 2)) as? InputViewCell, let text = cell.textField?.text {
+                dish.ingredient.append(IngredientModel(name: text, id: UUID().uuidString))
+            }
+        }
     }
     
     // Present screen with ingredient selection functionality
@@ -166,6 +196,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
                 if let cell = tableView.cellForRow(at: IndexPath(row: row, section: sectionNum)) as? InputViewCell,
                    let textCell = cell.textField?.text, textCell.isEmpty {
                     flag = false
+                    break
                 }
             }
         }

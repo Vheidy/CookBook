@@ -82,7 +82,8 @@ enum EditScreenConvertationModelHelper {
         
         var ingredientItems = [EditScreenItemType]()
         for ingredient in dish.ingredient {
-            ingredientItems.append(.labelItem(title: ingredient.name))
+            ingredientItems.append(.inputItem(placeholder: "Ingredient", inputedText: ingredient.name))
+//            ingredientItems.append(.labelItem(title: ingredient.name))
         }
         array.append(EditScreenModelSection(title: "Ingredients",
                                             needsHeader: .need(title: "Ingredients"),

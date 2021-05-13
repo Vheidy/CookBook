@@ -101,13 +101,16 @@ class DishService {
     func updateDish(_ dish: DishModel, completion: VoidCallback?) {
         guard let dishObject = fetchController.fetchedObjects else { return }
         let currentDishes = dishObject.filter({ $0.id == dish.id })
-        
+        guard !currentDishes.isEmpty else { return }
         let currentDish = currentDishes[0]
         currentDish.name = dish.name
         currentDish.typeDish = dish.typeDish
         currentDish.cuisine = dish.cuisine
         currentDish.imageName = dish.imageName
         currentDish.calories = dish.calories ?? 0
+        
+        transformIngredientsInObjects(dish, currentDish)
+        transormActionsInObjects(dish, currentDish)
         
         do {
             try currentContext.save()
