@@ -98,6 +98,30 @@ class DishService {
         }
     }
     
+    func updateDish(_ dish: DishModel, completion: VoidCallback?) {
+        guard let dishObject = fetchController.fetchedObjects else { return }
+        let currentDishes = dishObject.filter({ $0.id == dish.id })
+        guard !currentDishes.isEmpty else { return }
+        let currentDish = currentDishes[0]
+        currentDish.name = dish.name
+        currentDish.typeDish = dish.typeDish
+        currentDish.cuisine = dish.cuisine
+        currentDish.imageName = dish.imageName
+        currentDish.calories = dish.calories ?? 0
+        
+        transformIngredientsInObjects(dish, currentDish)
+        transormActionsInObjects(dish, currentDish)
+        
+        do {
+            try currentContext.save()
+            loadSavedData()
+            completion?()
+        } catch {
+            print("Save failed")
+            print(error)
+        }
+    }
+    
     private func saveData(_ dish: DishModel) {
         guard let dishesDataLoaded = try? JSONEncoder().encode(dish) else { return }
         self.dishesData = dishesDataLoaded
@@ -181,7 +205,11 @@ class DishService {
         dishObject.calories = dish.calories ?? 0
         
         transormActionsInObjects(dish, dishObject)
-        addIngredientsandSaveContext(dish, dishObject)
+        if ExtraFunctionality.enabled {
+            addIngredientsandSaveContext(dish, dishObject)
+        } else {
+            transformIngredientsInObjects(dish, dishObject)
+        }
         
         do {
             try currentContext.save()
@@ -191,6 +219,18 @@ class DishService {
             print("Save failed")
             print(error)
         }
+    }
+    
+    // Transform [String] -> NSSet<Ingredients>
+    private func transformIngredientsInObjects(_ dish: DishModel, _ dishObject: Dish) {
+        var setIngredients = Set<Ingredient>()
+        for ingredient in dish.ingredient {
+            let ingredientObject = Ingredient(context: currentContext)
+            ingredientObject.name = ingredient.name
+            ingredientObject.id = ingredient.id
+            setIngredients.insert(ingredientObject)
+        }
+        dishObject.ingredients = setIngredients as NSSet
     }
     
     // Transform [String] -> NSSet<Action>

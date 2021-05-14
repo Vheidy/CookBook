@@ -82,7 +82,8 @@ enum EditScreenConvertationModelHelper {
         
         var ingredientItems = [EditScreenItemType]()
         for ingredient in dish.ingredient {
-            ingredientItems.append(.labelItem(title: ingredient.name))
+            ingredientItems.append(.inputItem(placeholder: "Ingredient", inputedText: ingredient.name))
+//            ingredientItems.append(.labelItem(title: ingredient.name))
         }
         array.append(EditScreenModelSection(title: "Ingredients",
                                             needsHeader: .need(title: "Ingredients"),
@@ -162,7 +163,7 @@ class EditScreenModel {
        let indexPath = IndexPath(row: mySection.items.count, section: section)
        switch mySection.title {
        case "Ingredients":
-        if let newIngredient = ingredient, TabBarViewController.extraFunctionality {
+        if let newIngredient = ingredient, ExtraFunctionality.enabled {
             array[section].items.append(.labelItem(title: newIngredient.name))
         } else {
             array[section].items.append(.inputItem(placeholder: "Ingredient", inputedText: nil))

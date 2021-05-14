@@ -17,7 +17,7 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         switch cell.needsHeader {
         case .need(let title):
             let headerView: CustomHeader
-            if sectionTitle == "Ingredients", TabBarViewController.extraFunctionality {
+            if sectionTitle == "Ingredients", ExtraFunctionality.enabled  {
                 headerView = CustomHeader(title: title, section: section, addCells: presentChooseIngredientScreen)
             } else {
                 headerView = CustomHeader(title: title, section: section, addCells: addInputCells)
@@ -43,7 +43,16 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
             if editModel.checkDeleting(indexPath: indexPath) {
                 let cell = tableView.cellForRow(at: indexPath)
                 cell?.textLabel?.text = ""
+                switch indexPath.section {
+                case 2:
+                    dish.ingredient.remove(at: indexPath.row)
+                case 3:
+                    dish.orderOfAction.remove(at: indexPath.row)
+                default:
+                    break
+                }
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                updateButtonDone()
             }
         }
     }
@@ -102,8 +111,14 @@ extension EditDishViewController: UITextFieldDelegate {
             dish.name = textField.text ?? ""
         case "Dish Type":
             dish.typeDish = textField.text ?? ""
-        case "Action":
-            dish.orderOfAction.append(textField.text ?? "")
+        case "Cuisine":
+            dish.cuisine = textField.text ?? ""
+        case "Calories":
+            dish.calories = Int32(textField.text ?? "") ?? 0
+//        case "Action":
+//            dish.orderOfAction.append(textField.text ?? "")
+//        case "Ingredient":
+//            dish.ingredient.append(IngredientModel(name: textField.text ?? "", id: UUID().uuidString))
         default:
             break
         }

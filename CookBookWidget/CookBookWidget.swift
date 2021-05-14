@@ -73,6 +73,7 @@ struct CookBookWidgetEntryView: View {
             TextView(mainText: "Create your own ", subText: "CoocBook")
         }
         .aspectRatio(contentMode: .fit)
+        .foregroundColor(.orange)
     }
 }
 
