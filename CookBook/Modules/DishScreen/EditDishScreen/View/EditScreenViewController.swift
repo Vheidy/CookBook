@@ -236,10 +236,10 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     private func setup() {
-        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.rowHeight = UITableView.automaticDimension
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         
-        tableView.backgroundColor = #colorLiteral(red: 0.8979603648, green: 0.8980897069, blue: 0.8979321122, alpha: 1)
+        tableView.backgroundColor = Colors.lightPink
         
         tableView.tableFooterView = UIView(frame: .zero)
         
@@ -251,6 +251,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
 
     private func configureNavigationItem() {
         self.navigationItem.title = "Edit"
+        self.navigationController?.navigationBar.barTintColor = Colors.lightPink
         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
                                                               target: self, action: #selector(self.addRecipe)), animated: true)
         self.navigationItem.rightBarButtonItem?.isEnabled = false

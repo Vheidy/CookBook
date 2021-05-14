@@ -10,16 +10,34 @@ import UIKit
 class InputViewCell: UITableViewCell {
     
     var textField: UITextField?
+    var mainView: UIView
 
 //    static let identifier = "StandartViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        mainView = UIView()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+        contentView.backgroundColor = Colors.lightPink
+        setMainView()
         setTextField()
         
+    }
+    
+    private func setMainView() {
+        contentView.addSubview(mainView)
+        mainView.translatesAutoresizingMaskIntoConstraints = false
+        
+//        let num = Int.random(in: 1...100)
+
+        mainView.layer.cornerRadius = 15
+        
+        NSLayoutConstraint.activate([
+            mainView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.margin),
+            mainView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.margin),
+            mainView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3 * Constants.margin),
+            mainView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3 * Constants.margin)
+        ])
     }
     
     // Set placeholder for textField
@@ -34,9 +52,9 @@ class InputViewCell: UITableViewCell {
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         textField.font = UIFont(name: "Verdana", size: 20)
-        textField.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        textField.textColor = Colors.textColor
         
-        textField.backgroundColor = .white
+        textField.backgroundColor = Colors.lightBlue
         textField.layer.cornerRadius = Constants.margin
         
         NSLayoutConstraint.activate([

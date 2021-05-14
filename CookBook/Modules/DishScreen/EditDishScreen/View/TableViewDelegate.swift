@@ -10,6 +10,13 @@ import UIKit
 extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - TableViewDelegate implementation
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row != 1 {
+            return 60
+        }
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         guard let cell = editModel.getSection(section: section), let sectionTitle = editModel.getTitleSection(section: section) else { return nil }
@@ -24,7 +31,9 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return headerView
         default:
-            return nil
+            let standartView = UIView()
+            standartView.backgroundColor = Colors.lightPink
+            return standartView
         }
     }
     

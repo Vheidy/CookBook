@@ -15,7 +15,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
 //        let navigation = UINavigationController(rootViewController: TabBarViewController())
-        window?.rootViewController = TabBarViewController()
+        if ExtraFunctionality.enabled {
+            window?.rootViewController = TabBarViewController()
+        } else {
+            let mainViewController = MainScreenTableViewController(with: [])
+            let ncMain = UINavigationController(rootViewController: mainViewController)
+//            ncMain.navigationBar.tintColor = #colorLiteral(red: 0.8409824967, green: 0.9568938613, blue: 0.9243165851, alpha: 1)
+            UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.8409824967, green: 0.9568938613, blue: 0.9243165851, alpha: 1)
+            window?.rootViewController = ncMain
+            
+        }
         window?.windowScene = windowScene
         window?.makeKeyAndVisible()
     }

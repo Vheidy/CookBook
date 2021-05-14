@@ -26,6 +26,7 @@ struct DisplayItem {
     let name: String
     let type: String
     var image: UIImage?
+    let ingrediensCount: Int
 }
 
 protocol MainScreenViewModelProtocol: AnyObject {
@@ -37,7 +38,7 @@ protocol MainScreenViewModelProtocol: AnyObject {
 }
 
 class DishService {
-    @AppStorage("dishes", store: UserDefaults(suiteName: "group.vheidy.CookBook.CookBookWidget"))
+    @AppStorage("dishes", store: UserDefaults(suiteName: "group.com.vheidy.CookBook.CookBookWidget"))
     var dishesData = Data()
     
     var fetchController = NSFetchedResultsController<Dish>()
@@ -178,7 +179,7 @@ class DishService {
     func getFields(for indexPath: IndexPath) -> DisplayItem? {
         var imageDish: UIImage?
         let dish = fetchController.object(at: indexPath)
-        guard let name = dish.name, let dishType = dish.typeDish else { return nil }
+        guard let name = dish.name, let dishType = dish.typeDish, let ingredients = dish.ingredients else { return nil }
         if let imageName = dish.imageName {
             let imageManager = DataFileManager()
             if let data = imageManager.read(fromDocumentsWithFileName: imageName) {
@@ -189,7 +190,7 @@ class DishService {
 //            var path = paths[0] as String
 //            path.append(imageName)
         }
-        let displayModel = DisplayItem(name: name, type: dishType, image: imageDish)
+        let displayModel = DisplayItem(name: name, type: dishType, image: imageDish, ingrediensCount: ingredients.count)
         return displayModel
     }
     

@@ -16,6 +16,7 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     private lazy var logger = CBLogger()
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         logger.printLog("Screen did appear")
     }
     
@@ -24,10 +25,22 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
         dishService = DishService(dishes: dishes, completion: { [weak self] in
             self?.tableView.reloadData()
         })
-//        self.dishService.updateScreen = tableView.reloadData
+        
         self.dishService.fetchController.delegate = self
-
+        tableView.separatorStyle = .none
+        
         setup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.barTintColor = Colors.main
+//        self.navigationController?.navigationBar.set
+//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: ""), for: .default)
+//        
+//        self.navigationController?.navigationBar.shadowImage = UIImage(named: "")
+//        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 20), NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.1788931489, green: 0.2340304255, blue: 0.3876610994, alpha: 1) ]
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -40,11 +53,15 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
     
     private func setup() {
         navigationItem.title = "CookBook"
+        
+        view.backgroundColor = Colors.main
+        
 
         let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(presentEditScreen))
         addButton.accessibilityLabel = "Add new dish"
         navigationItem.setRightBarButton(addButton, animated: true)
         tableView.register(MainScreenTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
     // Add dish to the model
@@ -105,10 +122,15 @@ class MainScreenTableViewController: UITableViewController, NSFetchedResultsCont
         cell.dishImage?.image = UIImage(named: "dish")
         if let item = dishService.getFields(for: indexPath) {
             cell.nameLabel?.text = item.name
-            cell.dishTypeLabel?.text = item.type
+            cell.dishTypeLabel?.text = "\(item.ingrediensCount) ingredients"
             cell.dishImage?.image = item.image ?? UIImage(named: "dish")
             cell.isAccessibilityElement = true
             cell.accessibilityHint = "You can tap and see more information"
+            if indexPath.row % 2 == 0 {
+                cell.isEven = true
+            } else {
+                cell.isEven = false
+            }
         }
         return cell
     }

@@ -28,7 +28,7 @@ class ImageEditCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.backgroundColor = #colorLiteral(red: 0.8979603648, green: 0.8980897069, blue: 0.8979321122, alpha: 1)
+        contentView.backgroundColor = Colors.lightPink
         setImage()
         setButton()
     }
@@ -42,6 +42,9 @@ class ImageEditCell: UITableViewCell {
         editButton.setTitle("Add photo", for: .normal)
         editButton.setTitleColor(.systemBlue, for: .normal)
         editButton.titleLabel?.font = UIFont(name: "Verdana", size: 15)
+//        editButton.titleLabel?.textColor = Colors.textColor
+//        editButton.tintColor = Colors.textColor
+        editButton.setTitleColor(Colors.textColor, for: .normal)
         
         guard let image = imageDish else {
             return

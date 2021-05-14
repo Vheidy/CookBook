@@ -36,15 +36,15 @@ class CustomHeader: UITableViewHeaderFooterView {
         title.translatesAutoresizingMaskIntoConstraints = false
         addButton.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.backgroundColor = .clear
-        mainSubView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        contentView.backgroundColor = Colors.lightPink
+        mainSubView.backgroundColor = Colors.cellsPink
         
         contentView.addSubview(mainSubView)
         mainSubView.addSubview(title)
         mainSubView.addSubview(addButton)
         
         title.font = UIFont(name: "Verdana", size: 20)
-        title.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        title.textColor = Colors.textColor
         
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
         addButton.addTarget(self, action: #selector(didTap), for: .touchUpInside)

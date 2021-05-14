@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.vheidy.CookBook.CookBookWidget</string>
+		<string>group.com.vheidy.CookBook.CookBookWidget</string>
 	</array>
 </dict>
 </plist>
