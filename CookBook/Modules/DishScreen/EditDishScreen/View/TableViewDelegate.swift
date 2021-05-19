@@ -11,20 +11,26 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - TableViewDelegate implementation
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row != 1 {
+        if indexPath.section != 0 {
             return 60
         }
         return UITableView.automaticDimension
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0
+        }
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let currenSection = editModel.getSection(section: section), let sectionTitle = editModel.getTitleSection(section: section) else { return nil }
         
-        guard let cell = editModel.getSection(section: section), let sectionTitle = editModel.getTitleSection(section: section) else { return nil }
-        
-        switch cell.needsHeader {
+        switch currenSection.needsHeader {
         case .need(let title):
             let headerView: CustomHeader
-            if sectionTitle == "Ingredients", ExtraFunctionality.enabled  {
+            if sectionTitle == "Ingredients", ExtraFunctionality.enabled {
                 headerView = CustomHeader(title: title, section: section, addCells: presentChooseIngredientScreen)
             } else {
                 headerView = CustomHeader(title: title, section: section, addCells: addInputCells)
@@ -37,6 +43,16 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        guard let currenSection = editModel.getSection(section: section), let sectionTitle = editModel.getTitleSection(section: section) else { return 0 }
+//
+//        if section == 0 || section == 1 ||  currenSection.needsHeader != .notNeeded {
+//            return UITableView.automaticDimension
+//        } else {
+//            return 0
+//        }
+//    }
+    
     // MARK: - TableViewDataSourse implementation
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -47,6 +63,34 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
         editModel.getRowsInSectionCount(section: section)
     }
     
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .normal, title: "", handler: {[unowned editModel, unowned self]  _,_,_ in
+            if editModel.checkDeleting(indexPath: indexPath) {
+                let cell = tableView.cellForRow(at: indexPath)
+                cell?.textLabel?.text = ""
+                switch indexPath.section {
+                case 2:
+                    if dish.ingredient.indices.contains(indexPath.row) {
+                        self.dish.ingredient.remove(at: indexPath.row)
+                    }
+                case 3:
+                    if dish.orderOfAction.indices.contains(indexPath.row) {
+                    self.dish.orderOfAction.remove(at: indexPath.row)
+                    }
+                default:
+                    break
+                }
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                self.updateButtonDone()
+            }
+        })
+
+//            deleteAction.image = UIImage(named: "trash.png")
+        deleteAction.backgroundColor = Colors.cellsPink
+            return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if editModel.checkDeleting(indexPath: indexPath) {
@@ -54,9 +98,13 @@ extension EditDishViewController: UITableViewDelegate, UITableViewDataSource {
                 cell?.textLabel?.text = ""
                 switch indexPath.section {
                 case 2:
-                    dish.ingredient.remove(at: indexPath.row)
+                    if dish.ingredient.indices.contains(indexPath.row) {
+                        self.dish.ingredient.remove(at: indexPath.row)
+                    }
                 case 3:
-                    dish.orderOfAction.remove(at: indexPath.row)
+                    if dish.orderOfAction.indices.contains(indexPath.row) {
+                        self.dish.orderOfAction.remove(at: indexPath.row)
+                    }
                 default:
                     break
                 }
@@ -124,10 +172,6 @@ extension EditDishViewController: UITextFieldDelegate {
             dish.cuisine = textField.text ?? ""
         case "Calories":
             dish.calories = Int32(textField.text ?? "") ?? 0
-//        case "Action":
-//            dish.orderOfAction.append(textField.text ?? "")
-//        case "Ingredient":
-//            dish.ingredient.append(IngredientModel(name: textField.text ?? "", id: UUID().uuidString))
         default:
             break
         }

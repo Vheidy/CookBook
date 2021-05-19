@@ -14,8 +14,7 @@ import CoreData
 }
 
 @objc class CoreDataService: NSObject, SaveObjectProtocol {
-    
-    lazy var persistentContainer: NSPersistentContainer = {
+    static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "IngredientsModel")
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
@@ -26,7 +25,7 @@ import CoreData
     }()
     
     func saveContext () {
-        let context = persistentContainer.newBackgroundContext()
+        let context = Self.persistentContainer.newBackgroundContext()
         if context.hasChanges {
             do {
                 try context.save()
@@ -38,7 +37,7 @@ import CoreData
     }
     
     func save(objectName: String, params: [String: Any] = [:]) throws {
-        let currentContext = self.persistentContainer.newBackgroundContext()
+        let currentContext = CoreDataService.persistentContainer.newBackgroundContext()
         
         let object = NSEntityDescription.insertNewObject(forEntityName: objectName, into: currentContext)
         for (key, value) in params {
@@ -65,7 +64,7 @@ import CoreData
     }
     
     func fetchObjects(request: NSFetchRequest<NSManagedObject>) throws -> [NSManagedObject] {
-        let currentContext = self.persistentContainer.newBackgroundContext()
+        let currentContext = CoreDataService.persistentContainer.newBackgroundContext()
         do {
             let ingredientsObjects = try currentContext.fetch(request)
             return ingredientsObjects

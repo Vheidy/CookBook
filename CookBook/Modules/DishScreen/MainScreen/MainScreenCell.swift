@@ -116,7 +116,7 @@ class MainScreenTableViewCell: UITableViewCell {
                 name.leadingAnchor.constraint(equalTo: dishImage!.trailingAnchor, constant: 2*Constants.margin),
                 name.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -Constants.margin),
                 dishType.topAnchor.constraint(equalTo: name.bottomAnchor, constant: Constants.margin),
-                dishType.leadingAnchor.constraint(equalTo: dishImage!.trailingAnchor, constant: Constants.margin)
+                dishType.leadingAnchor.constraint(equalTo: dishImage!.trailingAnchor, constant: 2*Constants.margin)
             ])
         }
                 

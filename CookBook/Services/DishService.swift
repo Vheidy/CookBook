@@ -53,7 +53,7 @@ class DishService {
     
     init(dishes: [DishModel], completion: VoidCallback?) {
         coreDataService = CoreDataService()
-        self.currentContext = coreDataService.persistentContainer.newBackgroundContext()
+        self.currentContext = CoreDataService.persistentContainer.newBackgroundContext()
         loadSavedData()
     }
     

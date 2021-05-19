@@ -43,7 +43,7 @@ class IngredientsService: IngredientServiceProtocol {
     ///   - context: context where needs to find ingredient
     /// - Returns: array of Ingredients with required IDs
     func fetchIngredient(for requiredIDs: [String], context: NSManagedObjectContext? = nil) -> [Ingredient] {
-        let currentContext = context ?? coreDataService.persistentContainer.newBackgroundContext()
+        let currentContext = context ?? CoreDataService.persistentContainer.newBackgroundContext()
         
         var array: [Ingredient] = []
 
@@ -66,7 +66,7 @@ class IngredientsService: IngredientServiceProtocol {
     // Add ingredient at ingredients array and CoreData
     func addIngredient(_ ingredient: IngredientModel, completion: VoidCallback?) {
         DispatchQueue.global(qos: .default).async {
-            let currentContext = self.coreDataService.persistentContainer.newBackgroundContext()
+            let currentContext = CoreDataService.persistentContainer.newBackgroundContext()
             
             let ingredientObject = Ingredient(context: currentContext)
             ingredientObject.id = ingredient.id
@@ -83,7 +83,7 @@ class IngredientsService: IngredientServiceProtocol {
     // Update the ingredients array from coreData
     private func updateData(completion: VoidCallback?) {
         DispatchQueue.global(qos: .default).async { [unowned self] in
-            let currentContext = coreDataService.persistentContainer.newBackgroundContext()
+            let currentContext = CoreDataService.persistentContainer.newBackgroundContext()
 
             let fetchRequest = NSFetchRequest<Ingredient>(entityName: "Ingredient")
             do {
@@ -108,7 +108,7 @@ class IngredientsService: IngredientServiceProtocol {
     func deleteIngredient(index: Int, completion: VoidCallback?) {
         guard ingredientsStore.indices.contains(index) else {return}
         DispatchQueue.global(qos: .default).async { [unowned self] in
-        let currentContext = coreDataService.persistentContainer.newBackgroundContext()
+            let currentContext = CoreDataService.persistentContainer.newBackgroundContext()
             let ingredient = ingredientsStore[index]
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Ingredient")
             do {

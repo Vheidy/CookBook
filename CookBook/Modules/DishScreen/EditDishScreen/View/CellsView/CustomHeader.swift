@@ -58,7 +58,7 @@ class CustomHeader: UITableViewHeaderFooterView {
     
     private func setConstraints(mainSubView: UIView, title: UILabel, addButton: UIButton) {
         NSLayoutConstraint.activate([
-            mainSubView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 28),
+            mainSubView.topAnchor.constraint(equalTo: contentView.topAnchor),
             mainSubView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainSubView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             mainSubView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),

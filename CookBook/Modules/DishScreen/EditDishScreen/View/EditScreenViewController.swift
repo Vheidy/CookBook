@@ -12,13 +12,15 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
     var dish: DishModel
     var tableView: UITableView
     var editModel: EditScreenModel
+    var bottomNulConstraintTableView: NSLayoutConstraint?
+    var bottomHeightKeyboardConstraintTableView: NSLayoutConstraint?
     var imageView: UIImage?
     var isFull: Bool = false
     
     private var saveDish: (_ dish: DishModel)->()
     
     private lazy var logger = CBLogger()
-
+    
     override func viewDidAppear(_ animated: Bool) {
         logger.printLog("Screen did appear")
     }
@@ -29,6 +31,18 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
             if isHightlight {
                 hightlightCells()
             }
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.bottomNulConstraintTableView?.constant = -keyboardSize.height
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.bottomNulConstraintTableView?.constant = 0
         }
     }
     
@@ -46,8 +60,6 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
 
         self.tableView = UITableView()
         super.init(nibName: nil, bundle: nil)
-        
-
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -67,23 +79,10 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
-            }
-        }
-    }
-
-    @objc func keyboardWillHide(notification: NSNotification) {
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
-        }
-    }
-    
     // Needs to save dish in mainScreen and close editScreen
     @objc func addRecipe() {
         logger.printLog("Tap save button")
+        view.endEditing(true)
         self.saveDish(dish)
         closeScreen()
     }
@@ -104,7 +103,6 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         
         isHightlight = true
     }
-    
     
     private func updateActions() {
         dish.orderOfAction = []
@@ -177,7 +175,6 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         if !checkMainFields {
             isHightlight = true
             navigationItem.rightBarButtonItem?.isEnabled = false
-//            createDish()
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
@@ -218,7 +215,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
   
     private func addBorder(for cell: InputViewCell) {
         cell.textField?.layer.borderWidth = 2
-        cell.textField?.layer.borderColor = UIColor(red: 255, green: 0, blue: 0, alpha: 0.2).cgColor
+        cell.textField?.layer.borderColor = UIColor(red: 0, green: 0, blue: 255, alpha: 0.2).cgColor
     }
     
     // MARK: - Setup
@@ -230,9 +227,10 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        bottomNulConstraintTableView = tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomNulConstraintTableView?.isActive = true
     }
     
     private func setup() {
@@ -242,6 +240,8 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
         tableView.backgroundColor = Colors.lightPink
         
         tableView.tableFooterView = UIView(frame: .zero)
+        tableView.tableHeaderView = nil
+        tableView.separatorStyle = .none
         
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnTableView)))
         
@@ -251,6 +251,7 @@ class EditDishViewController: UIViewController, UINavigationControllerDelegate {
 
     private func configureNavigationItem() {
         self.navigationItem.title = "Edit"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 20), NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.1788931489, green: 0.2340304255, blue: 0.3876610994, alpha: 1) ]
         self.navigationController?.navigationBar.barTintColor = Colors.lightPink
         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
                                                               target: self, action: #selector(self.addRecipe)), animated: true)

@@ -66,8 +66,9 @@ class InputViewCell: UITableViewCell {
         
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textField.leftViewMode = .always
-    
         self.textField = textField
+        self.textField?.layer.borderWidth = 2
+        self.textField?.layer.borderColor = UIColor(red: 255, green: 0, blue: 0, alpha: 0.2).cgColor
     }
     
     required init?(coder: NSCoder) {
